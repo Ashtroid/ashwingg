@@ -1,0 +1,86 @@
+{% for match in matchData %}
+<div class = "match">
+	{% if match.info.matchStatus == "pending" %} <div class = "live">
+	{% elif match.info.matchStatus %} <div class = "win"> 
+	{% else %} <div class = "loss">
+	{% endif %}
+	<div class = "champion align-mid">
+		<div class = "d-block">
+			<div class = "championPortrait">
+				<img src="http://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{match.info.champion}}.png" class="rounded-circle"/>
+			</div>
+			<div class = "championText">
+				{{match.info.championName}}
+			</div>
+		</div>
+	</div>
+	<div class = "summonerSpell align-mid">
+		<div class = "d-block">
+			<div class = "summonerSpellIcon">
+				<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell1Id}}.png"/>
+			</div>
+			<div class = "summonerSpellIcon">
+				<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell2Id}}.png"/>
+			</div>
+			<div class = "summonerSpellIcon">
+				<img src="http://ddragon.leagueoflegends.com/cdn/img/{{match.info.rune}}"/>
+			</div>
+		</div>
+	</div>
+	<div class = "KDA align-mid">
+		<b>{{match.info.KDA}}</b>
+	</div>
+	{% for team in match.participantData %}
+	<div class = "playerInfo align-mid">
+		<div class = "d-block">
+			{% for participant in team %}
+				<div class = "d-block">
+					<div class = "smallImageBox">
+						<img src="http://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
+					</div>
+					<div class = "playerInfoText">
+						<form action="{% url 'home' %}" method="get">
+							<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
+						</form>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+	<div class = "items align-mid">
+		{% if match.isComplete %}
+			<div class = "d-inline-block">
+				{% for item in match.info.items %}
+					<div class = "item">
+						{% if item != 0 %}
+							<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{item}}.png" 
+							onerror="this.style.display='none'">
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+	<div class = "trinket align-mid">
+		{% if match.isComplete %}
+		<div class = "item">
+			<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{match.info.trinket}}.png" 
+			onerror="this.style.display='none'">
+		</div>
+		{% endif %}
+	</div>
+	<div class = "time align-mid">
+		<div class = "d-block">
+			{{match.timeStatus}}
+			<div class="statusOfMatch">
+				{% if match.info.matchStatus == "pending" %} PENDING
+				{% elif match.info.matchStatus %} VICTORY
+				{% else %} DEFEAT
+				{% endif %}
+			</div>
+			<div class = "durationFont">{{match.gameDuration}}</div>
+		</div>
+	</div>
+</div></div>
+{% endfor %}

@@ -1,0 +1,3 @@
+SECRET_KEY='X'
+API_KEY='Y'
+DEBUG=False

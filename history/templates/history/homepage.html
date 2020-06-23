@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ashwin.gg</title>
+		<link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'history/style.css' %}">
+	</head>
+	<body>
+		<div class = "banner bgHomepage"></div>
+		<div class="homepage">
+			<form action="{% url 'home' %}" method="get">
+				<input name = "username" class="searchBarHomepage" type="text" placeholder="Enter a Summoner Name" aria-label="Search" maxlength="16" minlength="3" autocomplete="off">
+			</form>
+		</div>
+		<div class="ashwingg unselectable">
+			Ashwin.gg
+		</div>
+		<div class="searchHistoryHomepage">
+			{% for search in searches reversed %}
+				<div class="searchHistoryResult">
+					<form action="{% url 'home' %}" method="get">
+						<input type="submit" class="link-button" name="username" value="{{search}}">
+					</form>
+				</div>
+			{% endfor %}
+		</div>
+	</body>
+</html>

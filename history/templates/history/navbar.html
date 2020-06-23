@@ -1,0 +1,21 @@
+{% load static %}
+<nav class="navbar navbar-expand-sm navStyle bgGreen">
+	<ul class="navbar-nav mr-auto">
+		<li class="nav-item"><div class = "logo align-mid unselectable">Ashwin.gg</div></li>
+		<li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+		<li class="nav-item"><a class="nav-link" href="{% url 'FAQ' %}">FAQ</a></li>
+	</ul>
+	<div class = "searchBarContainer">
+		<form action="{% url 'home' %}" method="get" id="search-form">
+			<ul class="navbar-nav text-right">
+				<li>
+					<input name = "username" class="searchBar" type="text" placeholder="Summoner Name" 
+					aria-label="Search" maxlength="16" minlength="3" autocomplete="off">
+				</li>
+				<li class="searchButtonContainer align-mid">
+					<img src="{% static 'logo.png' %}" class="searchButton" onclick="submitSearchForm()">
+				</li>
+			</ul>
+		</form>
+	</div>
+</nav>

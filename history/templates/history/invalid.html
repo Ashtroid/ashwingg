@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ashwin.gg</title>
+		<link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'history/style.css' %}">
+	</head>
+	<body>
+		{% include "history/navbar.html" %}
+		{% if response == "No-Summoner-Found" %}
+			Summoner <b>{{username}}</b> could not be found!
+		{% elif response == "Request-Not-Processed" %}
+			Request for  <b>{{username}}</b> could not be processed.
+		{% else %}
+			Summoner <b>{{username}}</b> is unranked!
+		{% endif %}
+	</body>
+</html>
