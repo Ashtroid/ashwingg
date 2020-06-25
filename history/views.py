@@ -35,3 +35,6 @@ def match(request):
 	match_html = loader.render_to_string('history/match.html', {'matchData': matchData["matchResults"]})
 	output_data = {'match_html': match_html, 'totalGames': matchData["totalGames"], 'numGames': matchData["numGames"]}
 	return JsonResponse(output_data)
+
+def riot(request):
+	return render(request, 'history/riot.txt')
