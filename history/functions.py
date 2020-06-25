@@ -146,7 +146,6 @@ def getMatchResults(matches, accountId, region):
 			gameFromDB = game.first()
 			gameData = gameFromDB.getData()
 			matchInfo = json.loads(gameData)
-			print("loaded from DB")
 		else:
 			matchInfo = dict()
 			matchInfo["isComplete"] = True;

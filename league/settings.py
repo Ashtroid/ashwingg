@@ -29,7 +29,7 @@ env = environ.Env(
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 API_KEY = env('API_KEY')
-DEBUG = True
+DEBUG = env('DEBUG')
 ALLOWED_HOSTS = ["*"]
 
 STATICFILES_DIRS = [
@@ -77,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'league.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -121,7 +120,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Security 
+# Security
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True

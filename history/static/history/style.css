@@ -180,8 +180,11 @@
 	padding: 6px;
 }
 
+.col-4 {
+	border-right: 1px solid #bbb;
+}
+
 .col-8 {
-	border-left:1px solid #bbb;
 	max-width: 850px;
 	min-width: 850px;
 }
