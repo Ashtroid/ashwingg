@@ -177,16 +177,12 @@
 }
 
 .match {
+	margin: auto;
+	width: 815px;
 	padding: 6px;
 }
 
-.col-4 {
-	border-right: 1px solid #bbb;
-}
-
 .col-8 {
-	max-width: 850px;
-	min-width: 850px;
 }
 
 .loadContainer {
@@ -220,11 +216,6 @@
 
 .loss {
 	background-color: #eeA8A8;
-}
-
-.colors {
-	background-color: #90ee90;
-	background-color: #ee9090;
 }
 
 .live {

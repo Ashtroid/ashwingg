@@ -32,7 +32,7 @@ API_KEY = env('API_KEY')
 DEBUG = env('DEBUG')
 
 SILENCED_SYSTEM_CHECKS = ['urls.W002']
-ALLOWED_HOSTS = ['localhost:8000', '127.0.0.1', 'ashwin.gg']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ashwin.gg']
 
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "static"),
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -123,17 +124,14 @@ USE_L10N = True
 USE_TZ = True
 
 # Security
-if not DEBUG:
-    os.environ['HTTPS'] = "on"
-    os.environ['wsgi.url_scheme'] = 'https'
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_REFERRER_POLICY = 'same-origin'
-    SECURE_HSTS_SECONDS = 60
+os.environ['wsgi.url_scheme'] = 'https'
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_REFERRER_POLICY = 'same-origin'
+SECURE_HSTS_SECONDS = 60
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
