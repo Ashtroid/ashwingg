@@ -30,7 +30,9 @@ env = environ.Env(
 SECRET_KEY = env('SECRET_KEY')
 API_KEY = env('API_KEY')
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = ["*"]
+
+SILENCED_SYSTEM_CHECKS = ['urls.W002']
+ALLOWED_HOSTS = ['localhost:8000', '127.0.0.1', 'ashwin.gg']
 
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "static"),
@@ -122,6 +124,8 @@ USE_TZ = True
 
 # Security
 if not DEBUG:
+    os.environ['HTTPS'] = "on"
+    os.environ['wsgi.url_scheme'] = 'https'
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True

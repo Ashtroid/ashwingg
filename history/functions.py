@@ -151,7 +151,7 @@ def getMatchResults(matches, accountId, region):
 			matchInfo["isComplete"] = True;
 			matchData = getMatchData(gameId, region)
 			matchInfo["gameDuration"] = gameDuration(matchData["gameDuration"])
-			matchInfo["timeStatus"] = timeStatus(matchData["gameCreation"])
+			matchInfo["gameCreation"] = matchData["gameCreation"]
 			participantDataBlue = []
 			participantDataRed = []
 			accountIdToInfo = dict()
@@ -189,6 +189,7 @@ def getMatchResults(matches, accountId, region):
 			matchInfo["infoByAccountId"] = accountIdToInfo
 			jsonStr = json.dumps(matchInfo)
 			MatchInfo.objects.create(gameId = gameId, gameData = jsonStr)
+		matchInfo["timeStatus"] = timeStatus(matchInfo["gameCreation"])
 		infoByAccountId = matchInfo.pop("infoByAccountId")
 		matchInfo["info"] = infoByAccountId[accountId]
 		matchList.append(matchInfo)

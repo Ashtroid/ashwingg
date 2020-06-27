@@ -205,6 +205,11 @@
 	height: 126px;
 }
 
+.win:hover, .loss:hover, .live:hover {
+	opacity: 80%;
+	cursor: pointer;
+}
+
 .win, .loss, .live, .loadContainer {
 	border-radius: 8px;
 	border:1px solid #bbb;

@@ -7,6 +7,7 @@ from . import config
 from .structures import LRU
 from ratelimit.decorators import ratelimit
 
+@csrf_protect
 @ratelimit(key='ip', rate='10/m', block=True)
 def home(request):
 	searches = request.session.get('searches', [])
