@@ -99,7 +99,7 @@ def getCurrentMatchResult(summonerId, region):
 def getLiveMatchData(match, summonerId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
-	champToChampName = requests.get("http://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
+	champToChampName = requests.get("https://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
 	matchInfo = dict()
 	matchInfo["timeStatus"] = timeStatus(match["gameStartTime"])
 	matchInfo["gameDuration"] = "In progress"
@@ -137,7 +137,7 @@ def getLiveMatchData(match, summonerId, region):
 def getMatchResults(matches, accountId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
-	champToChampName = requests.get("http://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
+	champToChampName = requests.get("https://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
 	matchList = []
 	for match in matches:
 		gameId = match["gameId"]

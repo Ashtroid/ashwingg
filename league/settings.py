@@ -32,7 +32,8 @@ API_KEY = env('API_KEY')
 DEBUG = env('DEBUG')
 
 SILENCED_SYSTEM_CHECKS = ['urls.W002']
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ashwin.gg']
+#ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ashwin.gg']
+ALLOWED_HOSTS = ['*']
 
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "static"),
@@ -124,6 +125,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Security
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 os.environ['wsgi.url_scheme'] = 'https'
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True

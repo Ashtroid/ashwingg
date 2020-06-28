@@ -23,9 +23,6 @@ def home(request):
 				request.session['searches'] = searches
 				return render(request, 'history/index.html', context = {'dict': response, 'searches': searches})
 	return render(request, 'history/homepage.html', context = {'searches': searches})
-	
-def FAQ(request):
-	return render(request, 'history/FAQ.html')
 
 @csrf_protect
 @ratelimit(key='ip', rate='10/m', block=True)
@@ -39,3 +36,6 @@ def match(request):
 
 def riot(request):
 	return render(request, 'history/riot.txt')
+	
+def FAQ(request):
+	return render(request, 'history/FAQ.html')

@@ -7,7 +7,7 @@
 	<div class = "champion align-mid">
 		<div class = "d-block">
 			<div class = "championPortrait">
-				<img src="http://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{match.info.champion}}.png" class="rounded-circle"/>
+				<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{match.info.champion}}.png" class="rounded-circle"/>
 			</div>
 			<div class = "championText">
 				{{match.info.championName}}
@@ -17,13 +17,13 @@
 	<div class = "summonerSpell align-mid">
 		<div class = "d-block">
 			<div class = "summonerSpellIcon">
-				<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell1Id}}.png"/>
+				<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell1Id}}.png"/>
 			</div>
 			<div class = "summonerSpellIcon">
-				<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell2Id}}.png"/>
+				<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell2Id}}.png"/>
 			</div>
 			<div class = "summonerSpellIcon">
-				<img src="http://ddragon.leagueoflegends.com/cdn/img/{{match.info.rune}}"/>
+				<img src="https://ddragon.leagueoflegends.com/cdn/img/{{match.info.rune}}"/>
 			</div>
 		</div>
 	</div>
@@ -36,7 +36,7 @@
 			{% for participant in team %}
 				<div class = "d-block">
 					<div class = "smallImageBox">
-						<img src="http://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
+						<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
 					</div>
 					<div class = "playerInfoText">
 						<form action="{% url 'home' %}" method="get">
@@ -54,7 +54,7 @@
 				{% for item in match.info.items %}
 					<div class = "item">
 						{% if item != 0 %}
-							<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{item}}.png" 
+							<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{item}}.png" 
 							onerror="this.style.display='none'">
 						{% endif %}
 					</div>
@@ -65,7 +65,7 @@
 	<div class = "trinket align-mid">
 		{% if match.isComplete %}
 		<div class = "item">
-			<img src = "http://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{match.info.trinket}}.png" 
+			<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{match.info.trinket}}.png" 
 			onerror="this.style.display='none'">
 		</div>
 		{% endif %}
