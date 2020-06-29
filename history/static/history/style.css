@@ -57,10 +57,9 @@
 	padding: 0px;
 }
 
-.navStyle {
-	border-bottom:1px solid #BBB;
+.navbar {
+	border-bottom: 1px solid #BBB;
 	height: 45px;
-	min-width: 600px;
 }
 
 .align-mid {
@@ -82,7 +81,7 @@
 
 .shell {
 	width: 100%;
-	min-height: 100vh;
+	min-height: calc(100vh - 45px);
 }
 
 .searchBarContainer {
@@ -182,7 +181,6 @@
 	margin: auto;
 	min-width: 815px;
 	padding: 6px;
-	display: inline;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -201,7 +199,7 @@
 	}
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1199px) {
 	.searchResultContainer {
 		visibility: hidden;
 	}
@@ -216,6 +214,10 @@
 
 	.playerStatsBox {
 		height: 160px;
+	}
+
+	body {
+		background-color: #DFD;
 	}
 }
 
@@ -385,7 +387,7 @@ p {
 }
 
 .FAQ p {
-	margin-bottom: 25px;
+	margin-bottom: 30px;
 	font-weight: 100;
 	letter-spacing: 1px;
 }
@@ -400,6 +402,7 @@ p {
 }
 
 .heading {
+	margin-top: 10px;
 	color: #000;
 	font-size: 30px;
 	font-weight: 100;
