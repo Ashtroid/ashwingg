@@ -1,5 +1,5 @@
 {% for match in matchData %}
-<div class = "match">
+<div class = "match"  onclick = "showGameExtension('{{match.gameId}}')">
 	{% if match.info.matchStatus == "pending" %} <div class = "live">
 	{% elif match.info.matchStatus %} <div class = "win"> 
 	{% else %} <div class = "loss">
@@ -83,4 +83,7 @@
 		</div>
 	</div>
 </div></div>
+<div class = "gameExtension" id = "{{match.gameId}}"> 
+	Extended Match History Coming Soon! (gameId = {{match.gameId}})
+</div>
 {% endfor %}

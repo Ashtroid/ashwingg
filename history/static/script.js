@@ -40,7 +40,17 @@ function loadGames() {
 function showLoad() {
 	$(".loading").hide();
 	document.getElementById("load-form-value").value = "Load More (" + startGame + "/" + totalGames + ")";
-	//if(startGame < totalGames) {
+	if(startGame < totalGames) {
 		$(".load").show();
-	//}
+	}
+}
+
+function showGameExtension(gameId) {
+	var game = document.getElementById(gameId);
+	var display = game.style.display;
+	if(game.style.display == "block") {
+		game.style.display = "none";
+	} else {
+		game.style.display = "block";
+	}
 }

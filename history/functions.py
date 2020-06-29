@@ -149,6 +149,7 @@ def getMatchResults(matches, accountId, region):
 		else:
 			matchInfo = dict()
 			matchInfo["isComplete"] = True;
+			matchInfo["gameId"] = gameId
 			matchData = getMatchData(gameId, region)
 			matchInfo["gameDuration"] = gameDuration(matchData["gameDuration"])
 			matchInfo["gameCreation"] = matchData["gameCreation"]
