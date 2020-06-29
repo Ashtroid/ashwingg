@@ -34,12 +34,20 @@
 	font-weight: 550;
 }
 
-.searchResultContainer {
-	min-width: 345px;
-	padding: 20px;
+.profileBox, .searchResultContainer {
+	margin: auto;
 	display: flex;
   	justify-content: center;
   	align-items: center;
+  	padding: 20px;
+	height: 160px;
+	width: 345px;
+}
+
+.searchResultContainer {
+	width: 345px;
+	padding: 10px;
+	padding-top: 50px;
 }
 
 .searchResult {
@@ -52,6 +60,7 @@
 .navStyle {
 	border-bottom:1px solid #BBB;
 	height: 45px;
+	min-width: 600px;
 }
 
 .align-mid {
@@ -63,14 +72,7 @@
 }
 
 .profileBox {
-	border-bottom: 1px solid #BBB;
-	padding: 10px;
-	height: 160px;
-	min-width: 345px;
-	width: 100%;
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
+	border-bottom: 1px solid #DDD;
 }
 
 .profileHolder {
@@ -79,8 +81,8 @@
 }
 
 .shell {
-	margin: auto;
-	width: 95%;
+	width: 100%;
+	min-height: 100vh;
 }
 
 .searchBarContainer {
@@ -176,13 +178,54 @@
 	position: absolute;
 }
 
-.match {
+.match, .matchContainer {
 	margin: auto;
-	width: 815px;
+	min-width: 815px;
 	padding: 6px;
+	display: inline;
 }
 
-.col-8 {
+@media only screen and (min-width: 1200px) {
+	.matchStats {
+		margin: auto;
+		width: calc(95% - 365px);
+	}
+
+	.playerStats {
+		margin: auto;
+		width: calc(5% + 365px);
+	}
+
+	.playerStats, .matchStats {
+		float: left;
+	}
+}
+
+@media only screen and (max-width: 1200px) {
+	.searchResultContainer {
+		visibility: hidden;
+	}
+
+	.profileBox {
+		float: left;
+	}
+
+	.playerStatsBox {
+		width: 690px;
+	}
+
+	.playerStatsBox {
+		height: 160px;
+	}
+}
+
+.matchStatsBox {
+	margin: auto;
+	width: 850px;
+}
+
+.playerStatsBox {
+	margin: auto;
 }
 
 .loadContainer {
@@ -341,6 +384,37 @@ p {
 	margin-bottom: 3px;
 }
 
+.FAQ p {
+	margin-bottom: 25px;
+	font-weight: 100;
+	letter-spacing: 1px;
+}
+
+.FAQ a {
+	font-weight: 300;
+}
+
+.FAQ {
+	width: 80%;
+	margin: auto;
+}
+
+.heading {
+	color: #000;
+	font-size: 30px;
+	font-weight: 100;
+	letter-spacing: 2px;
+	margin-bottom: 3px;
+	text-align: center;
+}
+
+.footer {
+	padding: 5px;
+	font-size: 12px;
+	color: #AAA;
+	text-align: center;
+}
+
 .summonerLevel {
 	color: #222;
 	text-align: center;
@@ -373,7 +447,7 @@ p {
 
 a {
 	color: #222;
-	letter-spacing: 3px;
+	letter-spacing: 1px;
 }
 
 a:hover {

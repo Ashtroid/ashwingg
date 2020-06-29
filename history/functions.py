@@ -47,7 +47,7 @@ def callAPI(id, region, APIUrl):
 
 def timeStatus(epochTime):
 	if epochTime == 0:
-		return "Just started"
+		return "Loading Screen"
 	date = datetime.datetime.fromtimestamp(epochTime//1000)
 	now = datetime.datetime.now()
 	return timeago.format(date, now)
