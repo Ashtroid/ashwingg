@@ -45,12 +45,29 @@ function showLoad() {
 	}
 }
 
-function showGameExtension(gameId) {
+function showGameExtension(gameId, isComplete) {
 	var game = document.getElementById(gameId);
 	var display = game.style.display;
 	if(game.style.display == "block") {
 		game.style.display = "none";
 	} else {
+		if(!isComplete) {
+			game.insertAdjacentHTML('afterbegin', "Game is Still Live");
+		} else if(game.style.display != "none") {
+			$.ajax({
+				type: "POST",
+				url: extended,
+				data: {
+		            'gameId': gameId,
+		            'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val()
+		    	},
+				success: function(response) {
+					game.insertAdjacentHTML('afterbegin', response.extended_html);
+				},
+				error: function (response) {
+				}
+			});
+		}
 		game.style.display = "block";
 	}
 }

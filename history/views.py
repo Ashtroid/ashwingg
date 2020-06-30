@@ -34,6 +34,15 @@ def match(request):
 	output_data = {'match_html': match_html, 'totalGames': matchData["totalGames"], 'numGames': matchData["numGames"]}
 	return JsonResponse(output_data)
 
+@csrf_protect
+@ratelimit(key='ip', rate='10/m', block=True)
+def loadGameExtension(request):
+	gameId = request.POST.get('gameId')
+	extendedData = Container.getExtendedData(gameId)
+	extended_html = loader.render_to_string('history/extended.html', {'participantData': extendedData})
+	output_data = {'extended_html': extended_html}
+	return JsonResponse(output_data)
+
 def riot(request):
 	return render(request, 'history/riot.txt')
 	

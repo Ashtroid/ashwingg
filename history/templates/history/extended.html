@@ -1,0 +1,53 @@
+{% for team in participantData %}
+<div class = "extendBlock">
+	{% for participant in team %}
+	<div class = "extendRow">
+		<div class = "championExtend align-mid">
+			<div class = "championPortraitExtend">
+				<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
+			</div>
+		</div>
+		<div class = "playerInfoTextExtend align-mid">
+			<div class = "d-block playerInfoTextExtend">
+				<div class = "playerNameExtend">
+					<form action="{% url 'home' %}" method="get">
+						<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
+					</form>
+				</div>
+				<div class = "KDAExtend">
+					{{participant.accountInfo.KDA}}
+				</div>
+			</div>
+		</div>
+		<div class = "runesExtend align-mid">
+			<div class = "d-inline-block">
+				<div class = "itemExtend align-mid">
+					<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{participant.accountInfo.spell1Id}}.png"/>
+				</div>
+				<div class = "itemExtend align-mid">
+					<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{participant.accountInfo.spell2Id}}.png"/>
+				</div>
+			</div>
+		</div>
+		<div class = "itemsExtend align-mid">
+			<div class = "d-inline-block">
+				{% for item in participant.accountInfo.items %}
+					<div class = "itemExtend align-mid">
+						{% if item != 0 %}
+							<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{item}}.png" 
+							onerror="this.style.display='none'">
+						{% endif %}
+					</div>
+				{% endfor %}
+				<div class = "itemExtend align-mid">
+					{% if item != 0 %}
+						<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{participant.accountInfo.trinket}}.png" 
+						onerror="this.style.display='none'">
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endfor %}

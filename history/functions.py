@@ -179,6 +179,7 @@ def getMatchResults(matches, accountId, region):
 				info["champion"] = champion
 				info["championName"] = champToChampName[champion]["name"]
 				accountIdToInfo[participant["player"]["accountId"]] = info
+				data["accountId"] = participant["player"]["accountId"]
 				if participantId < 6:
 					participantDataBlue.append(data)
 				else:
@@ -197,6 +198,18 @@ def getMatchResults(matches, accountId, region):
 	return matchList
 
 class Container():
+
+	def getExtendedData(gameId):
+		game = MatchInfo.objects.get(gameId = gameId)
+		gameData = game.getData()
+		match = json.loads(gameData)
+		participantData = match['participantData']
+		info = match["infoByAccountId"]
+		for team in participantData:
+			for key in team:
+				key["accountInfo"] = info[key['accountId']]
+		return participantData
+
 
 	def getMatchInfo(accountId, startGame):
 		region = "NA1"

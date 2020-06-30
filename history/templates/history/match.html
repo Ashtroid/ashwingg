@@ -1,10 +1,10 @@
 {% for match in matchData %}
-<div class = "match"  onclick = "showGameExtension('{{match.gameId}}')">
+<div class = "match">
 	{% if match.info.matchStatus == "pending" %} <div class = "live">
 	{% elif match.info.matchStatus %} <div class = "win"> 
 	{% else %} <div class = "loss">
 	{% endif %}
-	<div class = "champion align-mid">
+	<div class = "champion align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 		<div class = "d-block">
 			<div class = "championPortrait">
 				<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{match.info.champion}}.png" class="rounded-circle"/>
@@ -14,7 +14,7 @@
 			</div>
 		</div>
 	</div>
-	<div class = "summonerSpell align-mid">
+	<div class = "summonerSpell align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 		<div class = "d-block">
 			<div class = "summonerSpellIcon">
 				<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell1Id}}.png"/>
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 	</div>
-	<div class = "KDA align-mid">
+	<div class = "KDA align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 		<b>{{match.info.KDA}}</b>
 	</div>
 	{% for team in match.participantData %}
@@ -48,7 +48,7 @@
 		</div>
 	</div>
 	{% endfor %}
-	<div class = "items align-mid">
+	<div class = "items align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 		{% if match.isComplete %}
 			<div class = "d-inline-block">
 				{% for item in match.info.items %}
@@ -62,7 +62,7 @@
 			</div>
 		{% endif %}
 	</div>
-	<div class = "trinket align-mid">
+	<div class = "trinket align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 		{% if match.isComplete %}
 		<div class = "item">
 			<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{match.info.trinket}}.png" 
@@ -70,7 +70,7 @@
 		</div>
 		{% endif %}
 	</div>
-	<div class = "time align-mid">
+	<div class = "time align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 		<div class = "d-block">
 			{{match.timeStatus}}
 			<div class="statusOfMatch">
@@ -83,7 +83,5 @@
 		</div>
 	</div>
 </div></div>
-<div class = "gameExtension" id = "{{match.gameId}}"> 
-	Extended Match History Coming Soon! (gameId = {{match.gameId}})
-</div>
+<div class = "gameExtension" id = "{{match.gameId}}"> </div>
 {% endfor %}
