@@ -8,15 +8,10 @@
 			</div>
 		</div>
 		<div class = "playerInfoTextExtend align-mid">
-			<div class = "d-block playerInfoTextExtend">
-				<div class = "playerNameExtend">
-					<form action="{% url 'home' %}" method="get">
-						<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
-					</form>
-				</div>
-				<div class = "KDAExtend">
-					{{participant.accountInfo.KDA}}
-				</div>
+			<div class = "playerNameExtend">
+				<form action="{% url 'home' %}" method="get">
+					<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
+				</form>
 			</div>
 		</div>
 		<div class = "runesExtend align-mid">

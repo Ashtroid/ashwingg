@@ -103,10 +103,10 @@ def getLiveMatchData(match, summonerId, region):
 	matchInfo = dict()
 	matchInfo["timeStatus"] = timeStatus(match["gameStartTime"])
 	matchInfo["gameDuration"] = "In progress"
-	matchInfo["isComplete"] = False
 	participantDataBlue = []
 	participantDataRed = []
 	info = {}
+	matchInfo["isComplete"] = False
 	for participant in match["participants"]:
 		data = dict()
 		data["summonerName"] = participant["summonerName"]
@@ -121,7 +121,7 @@ def getLiveMatchData(match, summonerId, region):
 			map = json.load(open(os.path.join(BASE_DIR, "history/static/runes.json")))
 			rune = map.get(str(perks[0]))
 			info["rune"] = rune
-			info["matchStatus"] = "pending"
+			info["matchStatus"] = "live"
 			info["KDA"] = "LIVE"
 		if participant["teamId"] == 100:
 			participantDataBlue.append(data)
@@ -148,7 +148,6 @@ def getMatchResults(matches, accountId, region):
 			matchInfo = json.loads(gameData)
 		else:
 			matchInfo = dict()
-			matchInfo["isComplete"] = True;
 			matchInfo["gameId"] = gameId
 			matchData = getMatchData(gameId, region)
 			matchInfo["gameDuration"] = gameDuration(matchData["gameDuration"])
@@ -156,6 +155,7 @@ def getMatchResults(matches, accountId, region):
 			participantDataBlue = []
 			participantDataRed = []
 			accountIdToInfo = dict()
+			matchInfo["isComplete"] = True
 			for participant in matchData["participantIdentities"]:
 				data = dict()
 				info = dict()
@@ -166,7 +166,13 @@ def getMatchResults(matches, accountId, region):
 				info["spell2Id"] = summonerSpell[str(participantInfo["spell2Id"])]
 				stats = participantInfo["stats"]
 				info["rune"] = getRunes(stats)
-				info["matchStatus"] = stats["win"]
+				if matchData["gameDuration"] < 300:
+					matchStatus = "remake"
+				elif stats["win"]:
+					matchStatus = "win"
+				else:
+					matchStatus = "loss"
+				info["matchStatus"] = matchStatus
 				info["KDA"] = str(stats["kills"]) + " / " + str(stats["deaths"]) + " / " + str(stats["assists"])
 				itemList = []
 				for i in range(0, 6):

@@ -244,25 +244,30 @@
 	display: none;
 }
 
-.win, .loss, .live {
+.win, .loss, .live, .remake {
 	height: 126px;
 }
 
-.win:hover, .loss:hover, .live:hover {
+.win:hover, .loss:hover, .live:hover, .remake:hover {
 	opacity: 95%;
 	cursor: pointer;
 }
 
-.win, .loss, .live, .loadContainer {
+.win, .loss, .live, .remake, .loadContainer {
 	border-radius: 8px;
 	border:1px solid #bbb;
 }
+
 .win {
 	background-color: #A8eeA8;
 }
 
 .loss {
 	background-color: #eeA8A8;
+}
+
+.remake {
+	background-color: #DDD;
 }
 
 .live {
@@ -363,8 +368,7 @@
 }
 
 .playerNameExtend {
-	height: 18px;
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .KDAExtend {
