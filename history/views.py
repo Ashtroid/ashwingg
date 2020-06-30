@@ -26,7 +26,7 @@ def home(request):
 
 @csrf_protect
 @ratelimit(key='ip', rate='10/m', block=True)
-@ratelimit(key='post:username', rate='1/s', block=True)
+@ratelimit(key='post:username', rate='2/s', block=True)
 def match(request):
 	startGame = request.POST.get('startGame')
 	accountId = request.POST.get('accountId')
