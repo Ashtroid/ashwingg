@@ -206,7 +206,7 @@ def getMatchResults(matches, accountId, region):
 class Container():
 
 	def getExtendedData(gameId):
-		game = MatchInfo.objects.get(gameId = gameId)
+		game = MatchInfo.objects.filter(gameId = gameId).first()
 		gameData = game.getData()
 		match = json.loads(gameData)
 		participantData = match['participantData']
