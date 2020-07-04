@@ -46,7 +46,7 @@ function showLoad() {
 }
 
 $(window).scroll(function() {
-    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+    if($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
            // ajax call get data from server and append to the div
            loadGames();
     }
@@ -54,6 +54,8 @@ $(window).scroll(function() {
 
 function showGameExtension(gameId, isComplete) {
 	var game = document.getElementById(gameId);
+	var arrow = document.getElementById("a" + gameId)
+	$(arrow).toggleClass('flip');
 	var display = game.style.display;
 	if(game.style.display == "block") {
 		game.style.display = "none";

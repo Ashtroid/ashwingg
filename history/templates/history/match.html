@@ -1,6 +1,19 @@
 {% for match in matchData %}
 <div class = "match">
 	<div class = "{{match.info.matchStatus}}">
+		<div class = "time align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
+			<div class = "d-block">
+				{{match.timeStatus}}
+				<div class="statusOfMatch">
+					{% if match.info.matchStatus == "live" %} PENDING
+					{% elif match.info.matchStatus == "remake" %} REMAKE
+					{% elif match.info.matchStatus == "win" %} VICTORY
+					{% else %} DEFEAT
+					{% endif %}
+				</div>
+				<div class = "durationFont">{{match.gameDuration}}</div>
+			</div>
+		</div>
 		<div class = "champion align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 			<div class = "d-block">
 				<div class = "championPortrait">
@@ -27,24 +40,6 @@
 		<div class = "KDA align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 			<b>{{match.info.KDA}}</b>
 		</div>
-		{% for team in match.participantData %}
-		<div class = "playerInfo align-mid">
-			<div class = "d-block">
-				{% for participant in team %}
-					<div class = "d-block">
-						<div class = "smallImageBox">
-							<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
-						</div>
-						<div class = "playerInfoText">
-							<form action="{% url 'home' %}" method="get">
-								<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
-							</form>
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-		{% endfor %}
 		<div class = "items align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 			{% if match.isComplete %}
 				<div class = "d-inline-block">
@@ -67,18 +62,26 @@
 			</div>
 			{% endif %}
 		</div>
-		<div class = "time align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
+		{% for team in match.participantData %}
+		<div class = "playerInfo align-mid">
 			<div class = "d-block">
-				{{match.timeStatus}}
-				<div class="statusOfMatch">
-					{% if match.info.matchStatus == "live" %} PENDING
-					{% elif match.info.matchStatus == "remake" %} REMAKE
-					{% elif match.info.matchStatus == "win" %} VICTORY
-					{% else %} DEFEAT
-					{% endif %}
-				</div>
-				<div class = "durationFont">{{match.gameDuration}}</div>
+				{% for participant in team %}
+					<div class = "d-block">
+						<div class = "smallImageBox">
+							<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
+						</div>
+						<div class = "playerInfoText">
+							<form action="{% url 'home' %}" method="get">
+								<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
+							</form>
+						</div>
+					</div>
+				{% endfor %}
 			</div>
+		</div>
+		{% endfor %}
+		<div class = "arrow align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
+			<i class="fa fa-angle-down" id="a{{match.gameId}}"> </i>
 		</div>
 	</div>
 </div>

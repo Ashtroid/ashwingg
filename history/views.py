@@ -25,7 +25,7 @@ def home(request):
 	return render(request, 'history/homepage.html', context = {'searches': searches})
 
 @csrf_protect
-@ratelimit(key='ip', rate='10/m', block=True)
+@ratelimit(key='ip', rate='30/m', block=True)
 @ratelimit(key='post:username', rate='2/s', block=True)
 def match(request):
 	startGame = request.POST.get('startGame')

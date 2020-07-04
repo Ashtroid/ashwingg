@@ -186,46 +186,6 @@
 	border: 1px solid #BBB;
 	display: none;
 	padding: 0px;
-	background-color: #EFE;
-}
-
-@media only screen and (min-width: 1200px) {
-	.matchStats {
-		margin: auto;
-		width: calc(95% - 365px);
-	}
-
-	.playerStats {
-		margin: auto;
-		width: calc(5% + 365px);
-	}
-
-	.playerStats, .matchStats {
-		float: left;
-	}
-}
-
-@media only screen and (max-width: 1199px) {
-	.searchResultContainer {
-		visibility: hidden;
-	}
-
-	.profileBox {
-		float: left;
-	}
-
-	.playerStatsBox {
-		width: 690px;
-	}
-
-	.playerStatsBox {
-		height: 160px;
-	}
-}
-
-.matchStatsBox {
-	margin: auto;
-	width: 850px;
 }
 
 .playerStatsBox {
@@ -300,9 +260,8 @@
 	width: 100%;
 }
 
-
 .champion {
-	width: 100px;
+	width: 80px;
 }
 
 .championExtend {
@@ -321,13 +280,12 @@
 }
 
 .championText {
-	height: 16px;
 	text-align: center;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .summonerSpell {
-	width: 40px;
+	width: 30px;
 }
 
 .summonerSpellIcon {
@@ -343,28 +301,26 @@
 }
 
 .KDA {
-	width: 100px;
+	width: 90px;
 	font-size: 16px;
 }
 
 .smallImageBox {
 	float: left;
-	height: 19px;
 	width: 19px;
+	height: 19px;
 }
 
 .playerInfoText {
 	display: inline-block;
-	position: relative;
-	padding-left: 2px;
+	padding-left: 1px;
 	font-size: 12px;
 	width: 125px;
-	height: 19px;
 	vertical-align: middle;
 }
 
 .playerInfoTextExtend {
-	width: 105px;
+	width: 80px;
 }
 
 .playerNameExtend {
@@ -400,7 +356,8 @@
 }
 
 .items {
-	width: 108px;
+	padding-left: 5px;
+	width: 113px;
 }
 
 .itemsExtend {
@@ -412,7 +369,8 @@
 }
 
 .trinket {
-	width: 36px;
+	width: 51px;
+	padding-right: 15px;
 }
 
 .item {
@@ -493,6 +451,26 @@ p {
 	padding-bottom: 2px;
 }
 
+.arrow {
+	width: 42px;
+	font-size: 22px;
+	color: #444;
+	border-left: 1px solid white;
+}
+
+.arrow:hover {
+	background-color: white;
+	opacity: 40%;
+}
+
+.flip { 
+	transform: rotate(180deg);
+	-webkit-transition: 300ms ease all;
+    -moz-transition: 300ms ease all;
+    -o-transition: 300ms ease all;
+    transition: 300ms ease all;
+}
+
 .link-button {
 	overflow: hidden;
 	white-space: nowrap;
@@ -507,7 +485,7 @@ p {
 .link-button:hover {
 	text-decoration: underline;
 }
-
+	
 a {
 	color: #222;
 	letter-spacing: 1px;
@@ -542,4 +520,107 @@ img {
 
 input:focus, textarea:focus, select:focus{
 	outline: none;
+}
+
+@media only screen and (min-width: 1200px) {
+	.matchStats {
+		margin: auto;
+		width: calc(95% - 365px);
+	}
+
+	.playerStats {
+		margin: auto;
+		width: calc(5% + 365px);
+	}
+
+	.playerStats, .matchStats {
+		float: left;
+	}
+
+	.matchStatsBox {
+		margin: auto;
+		width: 850px;
+	}
+}
+
+@media only screen and (max-width: 1199px) {
+
+	.searchResultContainer {
+		visibility: hidden;
+	}
+
+	.profileBox {
+		float: left;
+	}
+
+	.playerStatsBox {
+		width: 690px;
+		height: 160px;
+	}
+
+	.match, .matchContainer, .gameExtension {
+		min-width: 900px;
+		max-width: 1000px;
+		width: 100%;
+		padding-left: 3px;
+		padding-right: 3px;
+	}
+
+	.matchStatsBox {
+		margin: auto;
+		width: 100vw;
+	}
+
+	.win, .loss, .live, .remake {
+		height: 160px;
+	}
+
+	.time {
+		width: 15%;
+		font-size: 19px;
+	}
+
+	.durationFont {
+		font-size: 17px;
+	}
+
+	.statusOfMatch {
+		font-size: 20px;
+	}
+
+	.champion {
+		width: 10%;
+	}
+
+	.championText {
+		font-size: 16px;
+	}
+
+	.KDA {
+		width: 12%;
+		font-size: 18px;
+	}
+
+	.playerInfo {
+		width: 20%;
+	}
+
+	.playerInfoText {
+		width: calc(100% - 26px);
+		height: 31px;
+		font-size: 16px;
+	}
+
+	.link-button {
+		width: 150px;
+	}
+
+	.smallImageBox {
+		height: 26px;
+		width: 26px;
+	}
+
+	.arrow {
+		width: calc(23% - 195px);
+	}
 }

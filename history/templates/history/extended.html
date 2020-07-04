@@ -9,9 +9,7 @@
 		</div>
 		<div class = "playerInfoTextExtend align-mid">
 			<div class = "playerNameExtend">
-				<form action="{% url 'home' %}" method="get">
-					<input type="submit" class="link-button text-left" value="{{participant.summonerName}}" name="username">
-				</form>
+				{{participant.accountInfo.KDA}}
 			</div>
 		</div>
 		<div class = "runesExtend align-mid">
