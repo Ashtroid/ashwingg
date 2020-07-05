@@ -15,6 +15,9 @@ function submitSearchForm() {
 }
 
 function loadGames() {
+	if($.active != 0) {
+		return;
+	}
 	$(".load").hide();
 	$(".loading").fadeIn();
 	$.ajax({
@@ -46,7 +49,7 @@ function showLoad() {
 }
 
 $(window).scroll(function() {
-    if($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+    if($.active == 0 && $(window).scrollTop() >= $(document).height() - $(window).height()) {
            // ajax call get data from server and append to the div
            loadGames();
     }

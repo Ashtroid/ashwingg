@@ -1,76 +1,78 @@
 {% extends 'history/base.html' %}
 {% load static %}
 {% block body_content %}
-	<div class = "shell">
-		<div class = "playerStats">
-			<div class = "playerStatsBox">
-				<div class = "profileBox">
-					<div class = "profileHolder">
-						<div class = "profileIcon">
-							<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/profileicon/{{dict.profileIconId}}.png"/>
-							<div class = "summonerLevel bgGreen unselectable"> {{dict.summonerLevel}} </div>
-						</div>
-					</div>
-					<div class = "profileHolder">
-						<p>{{dict.summonerName}}</p>
-						<button type="button" class="btn bgGreen" 
-						onclick="javascript:window.location.href=window.location.href"> Update </button>
+<div class = "shellBox">
+	<div class = "playerStats">
+		<div class = "playerStatsBox">
+			<div class = "profileBox">
+				<div class = "profileHolder">
+					<div class = "profileIcon">
+						<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/profileicon/{{dict.profileIconId}}.png"/>
+						<div class = "summonerLevel bgGreen unselectable"> {{dict.summonerLevel}} </div>
 					</div>
 				</div>
-				<div class = "profileBox">
-					<div class = "profileHolder">
-						<div class = "rankContainer">
-							<img src="{{dict.rankUrl}}"/>
-						</div>
-					</div>
-					<div class = "profileHolder">
-						<div class="text">
-							<div class="textGreen">{{dict.ELO}}</div>
-							<div class="textGray"> {{dict.LP}}</div>
-						</div>
-						<div class="text textGray">{{dict.winloss}}</div>
-						<div class="text">
-							<div class="textGreen">{{dict.winPercent}}</div>
-							<div class="textGray"> Win Ratio</div>
-						</div>
+				<div class = "profileHolder">
+					<p>{{dict.summonerName}}</p>
+					<button type="button" class="btn bgGreen" 
+					onclick="javascript:window.location.href=window.location.href"> Update </button>
+				</div>
+			</div>
+			<div class = "profileBox">
+				<div class = "profileHolder">
+					<div class = "rankContainer">
+						<img src="{{dict.rankUrl}}"/>
 					</div>
 				</div>
-				<div class="searchResultContainer">
-					<div class="searchResult">
-						{% for search in searches reversed %}
-							<div class="searchHistoryResult">
-								<form action="{% url 'home' %}" method="get">
-									<input type="submit" class="link-button" name="username" value="{{search}}">
-								</form>
-							</div>
-						{% endfor %}
+				<div class = "profileHolder">
+					<div class="text">
+						<div class="textGreen">{{dict.ELO}}</div>
+						<div class="textGray"> {{dict.LP}}</div>
+					</div>
+					<div class="text textGray">{{dict.winloss}}</div>
+					<div class="text">
+						<div class="textGreen">{{dict.winPercent}}</div>
+						<div class="textGray"> Win Ratio</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class = "matchStats">
-			<div class = "matchStatsBox">
-				<div class = "matchContainer">
-					{% include "history/match.html" with matchData=dict.matchData %}
+			<div class="searchResultContainer">
+				<div class="searchResult">
+					{% for search in searches reversed %}
+						<div class="searchHistoryResult">
+							<form action="{% url 'home' %}" method="get">
+								<input type="submit" class="link-button" name="username" value="{{search}}">
+							</form>
+						</div>
+					{% endfor %}
 				</div>
-				<div class = "match">
-					<div class = "loadContainer">
-						<div class = "loading">
-							<div class="spinner-border text-secondary" role="status">
-								<span class="sr-only"></span>
-							</div>
+			</div>
+		</div>
+	</div>
+	<div class = "matchStats">
+		<div class = "matchStatsBox">
+			<div class = "matchContainer">
+				{% include "history/match.html" with matchData=dict.matchData %}
+			</div>
+			<div class = "match">
+				<div class = "loadContainer">
+					<div class = "loading">
+						<div class="spinner-border text-secondary" role="status">
+							<span class="sr-only"></span>
 						</div>
-						<div class = "load">
-							<form action = "" id = "load-form" method="post">
-	            				{% csrf_token %}
-	            				<input type="submit" id = "load-form-value" class="btn btn-link"/>
-	    					</form>
-						</div>
+					</div>
+					<div class = "load">
+						<form action = "" id = "load-form" method="post">
+            				{% csrf_token %}
+            				<input type="submit" id = "load-form-value" class="btn btn-link"/>
+    					</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+{% endblock %}
+{% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">

@@ -1,10 +1,17 @@
 import requests
-import json
+try:
+    import ujson as json
+except ImportError:
+    try:
+        import simplejson as json
+    except ImportError:
+        import json
 import os
 import timeago, datetime
 from league.settings import BASE_DIR, API_KEY
 from . import config
 from .models import MatchInfo
+from roleidentification import pull_data, get_roles
 
 def requestSummonerId(id, region):
 	response = callAPI(id, region, "/lol/summoner/v4/summoners/by-name/")
@@ -87,6 +94,20 @@ def getRunes(stats):
 	rune = map.get(str(stats["perk0"]))
 	return rune
 
+def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed):
+	participantData = []
+	blueRoles = get_roles(champion_roles, unsortedChampListBlue)
+	redRoles = get_roles(champion_roles, unsortedChampListRed)
+	teams = [blueRoles, redRoles]
+	roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
+	for team in teams:
+		participantDataList = []
+		for role in roles:
+			participantDataList.append(participantDataMap[team[role]])
+		participantData.append(participantDataList)
+	return participantData
+	
+
 def getCurrentMatchResult(summonerId, region):
 	response = getSummonersInActiveGame(summonerId, region)
 	match = response.json()
@@ -103,14 +124,17 @@ def getLiveMatchData(match, summonerId, region):
 	matchInfo = dict()
 	matchInfo["timeStatus"] = timeStatus(match["gameStartTime"])
 	matchInfo["gameDuration"] = "In progress"
-	participantDataBlue = []
-	participantDataRed = []
 	info = {}
 	matchInfo["isComplete"] = False
+	participantDataMap = dict()
+	champion_roles = pull_data()
+	unsortedChampListBlue = []
+	unsortedChampListRed = []
 	for participant in match["participants"]:
 		data = dict()
 		data["summonerName"] = participant["summonerName"]
-		champion = championDict[str(participant["championId"])]
+		championId = participant["championId"]
+		champion = championDict[str(championId)]
 		data["champion"] = champion
 		if participant["summonerId"] == summonerId:
 			info["champion"] = champion
@@ -123,14 +147,12 @@ def getLiveMatchData(match, summonerId, region):
 			info["rune"] = rune
 			info["matchStatus"] = "live"
 			info["KDA"] = "LIVE"
+		participantDataMap[championId] = data
 		if participant["teamId"] == 100:
-			participantDataBlue.append(data)
+			unsortedChampListBlue.append(championId)
 		else:
-			participantDataRed.append(data)
-	participantData = []
-	participantData.append(participantDataBlue)
-	participantData.append(participantDataRed)
-	matchInfo["participantData"] = participantData
+			unsortedChampListRed.append(championId)
+	matchInfo["participantData"] = getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed)
 	matchInfo["info"] = info
 	return matchInfo
 
@@ -138,6 +160,7 @@ def getMatchResults(matches, accountId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
 	champToChampName = requests.get("https://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
+	champion_roles = pull_data()
 	matchList = []
 	for match in matches:
 		gameId = match["gameId"]
@@ -147,13 +170,14 @@ def getMatchResults(matches, accountId, region):
 			gameData = gameFromDB.getData()
 			matchInfo = json.loads(gameData)
 		else:
+			unsortedChampListBlue = []
+			unsortedChampListRed = []
 			matchInfo = dict()
 			matchInfo["gameId"] = gameId
 			matchData = getMatchData(gameId, region)
 			matchInfo["gameDuration"] = gameDuration(matchData["gameDuration"])
 			matchInfo["gameCreation"] = matchData["gameCreation"]
-			participantDataBlue = []
-			participantDataRed = []
+			participantDataMap = dict()
 			accountIdToInfo = dict()
 			matchInfo["isComplete"] = True
 			for participant in matchData["participantIdentities"]:
@@ -186,14 +210,12 @@ def getMatchResults(matches, accountId, region):
 				info["championName"] = champToChampName[champion]["name"]
 				accountIdToInfo[participant["player"]["accountId"]] = info
 				data["accountId"] = participant["player"]["accountId"]
+				participantDataMap[championId] = data
 				if participantId < 6:
-					participantDataBlue.append(data)
+					unsortedChampListBlue.append(championId)
 				else:
-					participantDataRed.append(data)
-			participantData = []
-			participantData.append(participantDataBlue)
-			participantData.append(participantDataRed)
-			matchInfo["participantData"] = participantData
+					unsortedChampListRed.append(championId)
+			matchInfo["participantData"] = getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed)
 			matchInfo["infoByAccountId"] = accountIdToInfo
 			jsonStr = json.dumps(matchInfo)
 			MatchInfo.objects.create(gameId = gameId, gameData = jsonStr)

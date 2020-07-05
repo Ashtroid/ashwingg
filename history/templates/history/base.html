@@ -17,7 +17,6 @@
 		{% block navbar %}
 		<nav class="navbar navbar-expand bgGreen">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item d-none d-sm-block"><div class = "logo align-mid unselectable">Ashwin.gg</div></li>
 				<li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
 				<li class="nav-item"><a class="nav-link" href="{% url 'FAQ' %}">FAQ</a></li>
 			</ul>
@@ -35,10 +34,23 @@
 				</form>
 			</div>
 		</nav>
+		<div class = "nav-mobile bgGreen">
+			<div class = "logo unselectable logoText">
+				Ashwin.gg
+			</div>
+			<div class = "logo">
+				<form action="{% url 'home' %}" method="get">
+					<input name = "username" class="mobileSearchBar" type="text" placeholder="Summoner Name" aria-label="Search" maxlength="16" minlength="3" autocomplete="off">
+				</form>
+			</div>
+		</div>
 		{% endblock %}
-		{% block body_content %}{% endblock %}
+		<div class = shell>
+			{% block body_content %}{% endblock %}
+		</div>
+		{% block footer %}
+		<div class = "footer">Ashwin.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</div>
+		{% endblock %}
+		{% block scripts %}{% endblock %}
 	</body>
-	{% block footer %}
-	<div class = "footer">Ashwin.gg is an open-source project and SSL protected for your security </div>
-	{% endblock %}
 </html>
