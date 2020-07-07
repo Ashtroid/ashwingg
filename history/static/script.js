@@ -1,5 +1,4 @@
 var startGame = 0;
-var totalGames = 0;
 
 $(document).ready(function() {
 	loadGames();
@@ -30,7 +29,6 @@ function loadGames() {
     	},
 		success: function(response) {
 			$(".matchContainer").append(response.match_html);
-			totalGames = response.totalGames;
 			startGame += response.numGames;
 			showLoad();
 		},
@@ -42,16 +40,13 @@ function loadGames() {
 
 function showLoad() {
 	$(".loading").hide();
-	document.getElementById("load-form-value").value = "Load More (" + startGame + "/" + totalGames + ")";
-	if(startGame < totalGames) {
-		$(".load").show();
-	}
+	$(".load").show();
 }
 
 $(window).scroll(function() {
-    if($.active == 0 && $(window).scrollTop() >= $(document).height() - $(window).height()) {
-           // ajax call get data from server and append to the div
-           loadGames();
+	if($.active == 0 && $(window).scrollTop() >= $(document).height() - $(window).height()) {
+		// ajax call get data from server and append to the div
+		loadGames();
     }
 });
 
@@ -71,7 +66,7 @@ function showGameExtension(gameId, isComplete) {
 				url: extended,
 				data: {
 		            'gameId': gameId,
-		            'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val()
+		            'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
 		    	},
 				success: function(response) {
 					game.insertAdjacentHTML('afterbegin', response.extended_html);

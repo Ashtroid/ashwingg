@@ -1,23 +1,93 @@
 {% extends 'history/base.html' %}
+{% load static %}
 {% block navbar %}{% endblock %}
 {% block body_content %}
-	<div class = "banner bgGreen"></div>
-	<div class="homepage">
-		<form action="{% url 'home' %}" method="get">
-			<input name = "username" class="searchBarHomepage" type="text" placeholder="Enter a Summoner Name" aria-label="Search" maxlength="16" minlength="3" autocomplete="off">
-		</form>
-	</div>
-	<div class="ashwingg unselectable">
-		Ashwin.gg
-	</div>
-	<div class="searchHistoryHomepage">
-		{% for search in searches reversed %}
-			<div class="searchHistoryResult">
-				<form action="{% url 'home' %}" method="get">
-					<input type="submit" class="link-button" name="username" value="{{search}}">
-				</form>
+<div class = "banner bgGreen">
+	<!-- Modal -->
+	<div class="modal fade" id="regionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="text-align: center;">
+					<h5 class="modal-title">Region</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+				</div>
+				<div class="modal-body">
+					{% for regionItem in regions %}
+					<!--
+					<form action = "" id = "changeRegion" method="post">
+						{% csrf_token %}
+						<input type="submit" class="btn bgGreen" value="{{regionItem}}" data-dismiss="modal">
+					</form>-->
+					<button class="btn bgGreen" onclick="changeRegion('{{regionItem}}')" data-dismiss="modal">
+						{% csrf_token %}
+						{{regionItem}}
+					</button>
+					<script type="text/javascript">
+						function changeRegion(region) {
+							//document.getElementById("regionTarget").innerHTML = region;
+							if($.active == 0) {
+								$.ajax({
+									type: "POST",
+									url: "{% url 'region' %}",
+									data: {
+							            'region': region,
+							            'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
+							    	},
+									success: function(response) {
+										document.getElementById("regionTarget").innerHTML = response.region;
+									},
+									error: function (response) {
+										alert("There was an error with your request - please try again later");
+									}
+								});
+							}
+						}
+					</script>
+					{% endfor %}
+				</div>
 			</div>
-		{% endfor %}
+		</div>
 	</div>
+</div>
+<div class="homepage">
+	<nav class="navbar navbar-expand" style="border: transparent;">
+		<div class = "region align-mid">
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btnSize" data-toggle="modal" data-target="#regionModal" id="regionTarget">
+				{{region}}
+			</button>
+		</div>
+		<form action="{% url 'home' %}" method="get" id = "search-form">
+			<input name = "username" class="searchBarHomepage" type="text" placeholder="Enter a Summoner Name" aria-label="Search" maxlength="16" autocomplete="off">
+		</form>
+		<div class = "region align-mid searchButtonHome unselectable" onclick="submitSearchForm()">
+			.gg
+		</div>
+	</nav>
+</div>
+<div class="ashwingg unselectable">
+	Ashwin.gg
+</div>
+<div class="searchHistoryHomepage">
+	<div class = "searchHeader">
+		{% if searches %} Recent Searches {% else %} Welcome to Ashwin.gg, looks like you're new here! {% endif %}
+	</div>
+	{% for search in searches reversed %}
+		<div class="searchHistoryResult">
+			<form action="{% url 'home' %}" method="get">
+				<input type="submit" class="link-button" name="username" value="{{search}}">
+			</form>
+		</div>
+	{% endfor %}
+</div>
 {% endblock %}
 {% block footer %}{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+	function submitSearchForm() {
+		document.getElementById("search-form").submit();
+	}
+</script>
+{% endblock %}

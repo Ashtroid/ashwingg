@@ -73,9 +73,14 @@
 	background-color: white;
 }
 
+.searchButtonHome {
+	cursor: pointer;
+}
+
 .searchButtonContainer, .searchBar, .searchBarContainer {
 	font-size: 15px;
 	height: 34px;
+	border-radius: 1px solid 
 }
 
 .searchButtonContainer {
@@ -108,8 +113,8 @@
 }
 
 .ashwingg {
-	font-weight: 550;
-	letter-spacing: 0.3em;
+	font-weight: 750;
+	letter-spacing: 0.1em;
 	color: white;
 	font-size: 3em;
 	position: absolute;
@@ -121,26 +126,43 @@
 
 .logo {
 	width: 100%;
-	height: 90px;
+	height: 100px;
 	display: flex;
   	justify-content: center;
   	align-items: center;
 }
 
+.searchHeader {
+	width: 100%;
+	height: 40px;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	color: #222;
+  	font-size: 18px;
+  	font-weight: 650;
+  	border-bottom: 1px solid #222;
+}
+
 .logoText {
 	font-weight: 700;
 	letter-spacing: 1px;
-	color: #00626E;
-	font-size: 36px;
+	color: white;
+	font-size: 48px;
+}
+
+.logoText:hover {
+	color: #EEFFEE;
+	text-decoration: none;
 }
 
 .mobileSearchBar {
-	width: 80vw;
-	height: 65px;
-	font-size: 28px;
+	width: 94vw;
+	height: 80px;
+	font-size: 42px;
 	text-align: center;
 	border: transparent;
-	border-radius: 8px;
+	border-radius: 10px;
 }
 
 .nav-mobile {
@@ -154,6 +176,10 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.link-button {
+	text-align: left;
 }
 
 .searchHistoryHomepage {
@@ -171,7 +197,6 @@
 	width: 115px;
 	padding: 5px;
 	height: 40px;
-	text-align: center;
 	float: left;
 	vertical-align: middle;
 }
@@ -519,7 +544,7 @@ a:hover {
 }
 
 .nav-item a:hover {
-	color: #6C023E;
+	color: white;
 }
 
 .btn-link {
@@ -539,8 +564,44 @@ input:focus, textarea:focus, select:focus{
 	outline: none;
 }
 
+
+.modal-dialog {
+	width: 50%;
+}	
+
+.modal .btn {
+	font-weight: 450;
+	font-size: 16px;
+}
+
+.modal {
+	text-align: center;
+	color: black;
+}
+
 .matchStatsBox {
 	margin: auto;
+}
+
+.region {
+	width: 46px;
+	height: 46px;
+	border: 1px solid #BBB;
+	background-color: white;
+	color: #00626E;
+	font-size: 28px;
+	font-weight: 850;
+}
+
+.btnSize {
+	width: 56px;
+	height: 56px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.btn:focus {
+	box-shadow: none;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -567,15 +628,29 @@ input:focus, textarea:focus, select:focus{
 
 @media only screen and (max-width: 1199px) {
 
+	.region {
+		width: 56px;
+		height: 56px;
+	}
+
+	.shell {
+		min-height: calc(100vh - 300px);
+	}
+
+	.profileIcon img{
+		border: 2px solid #00626E;
+	}
+
+	.bgGreen {
+		background-color: #00626E;
+		color: white;
+	}
+
 	.nav-mobile {
 		display: block;
 	}
 
-	.navbar {
-		display: none;
-	}
-
-	.searchResultContainer {
+	.notMobile {
 		display: none;
 	}
 
@@ -586,18 +661,8 @@ input:focus, textarea:focus, select:focus{
 	.playerStatsBox {
 		width: 690px;
 		height: 160px;
-		background-color:
 	}
 
-	.playerStats {
-		border-bottom: 1px solid #DDD;
-		background-color: #93FDC1;
-	}
-
-	.bMobileColor {
-		background-color: #00626E;
-		color: white;
-	}
 
 	.match, .matchContainer, .gameExtension {
 		min-width: 900px;
@@ -668,6 +733,7 @@ input:focus, textarea:focus, select:focus{
 		width: 80vw;
 		height: 56px;
 		font-size: 28px;
+		color: #222;
 	}
 
 	.ashwingg {

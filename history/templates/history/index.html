@@ -8,12 +8,12 @@
 				<div class = "profileHolder">
 					<div class = "profileIcon">
 						<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/profileicon/{{dict.profileIconId}}.png"/>
-						<div class = "summonerLevel bgGreen unselectable bMobileColor"> {{dict.summonerLevel}} </div>
+						<div class = "summonerLevel bgGreen unselectable"> {{dict.summonerLevel}} </div>
 					</div>
 				</div>
 				<div class = "profileHolder">
 					<p>{{dict.summonerName}}</p>
-					<button type="button" class="btn bgGreen bMobileColor" 
+					<button type="button" class="btn bgGreen" 
 					onclick="javascript:window.location.href=window.location.href"> Update </button>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="searchResultContainer">
+			<div class="searchResultContainer notMobile">
 				<div class="searchResult">
 					{% for search in searches reversed %}
 						<div class="searchHistoryResult">
@@ -63,7 +63,7 @@
 					<div class = "load">
 						<form action = "" id = "load-form" method="post">
             				{% csrf_token %}
-            				<input type="submit" id = "load-form-value" class="btn btn-link"/>
+            				<input type="submit" value="Load More" class="btn btn-link"/>
     					</form>
 					</div>
 				</div>
@@ -73,12 +73,10 @@
 </div>
 {% endblock %}
 {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		var match = "{% url 'match' %}";
-		var accountId = "{{dict.accountId}}";
 		var extended = "{% url 'extended' %}";
+		var accountId = "{{dict.accountId}}";
 	</script>
     <script type="text/javascript" src="{% static 'script.js' %}"></script>
 {% endblock %}

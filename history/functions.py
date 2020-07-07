@@ -114,8 +114,7 @@ def getCurrentMatchResult(summonerId, region):
 	if response.status_code != 200 or match["gameQueueConfigId"] != 420:
 		return {"status": 0}
 	result = getLiveMatchData(match, summonerId, region)
-	ret = {"status": 1, "matchData": [result]}
-	return ret
+	return {"status": 1, "matchData": [result]}
 
 def getLiveMatchData(match, summonerId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
@@ -164,7 +163,7 @@ def getMatchResults(matches, accountId, region):
 	matchList = []
 	for match in matches:
 		gameId = match["gameId"]
-		game = MatchInfo.objects.filter(gameId = gameId)
+		game = MatchInfo.objects.filter(gameId = region + str(gameId))
 		if game.exists():
 			gameFromDB = game.first()
 			gameData = gameFromDB.getData()
@@ -218,7 +217,7 @@ def getMatchResults(matches, accountId, region):
 			matchInfo["participantData"] = getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed)
 			matchInfo["infoByAccountId"] = accountIdToInfo
 			jsonStr = json.dumps(matchInfo)
-			MatchInfo.objects.create(gameId = gameId, gameData = jsonStr)
+			MatchInfo.objects.create(gameId = region + str(gameId), gameData = jsonStr)
 		matchInfo["timeStatus"] = timeStatus(matchInfo["gameCreation"])
 		infoByAccountId = matchInfo.pop("infoByAccountId")
 		matchInfo["info"] = infoByAccountId[accountId]
@@ -227,8 +226,8 @@ def getMatchResults(matches, accountId, region):
 
 class Container():
 
-	def getExtendedData(gameId):
-		game = MatchInfo.objects.filter(gameId = gameId).first()
+	def getExtendedData(gameId, region):
+		game = MatchInfo.objects.filter(gameId = region + str(gameId)).first()
 		gameData = game.getData()
 		match = json.loads(gameData)
 		participantData = match['participantData']
@@ -239,14 +238,12 @@ class Container():
 		return participantData
 
 
-	def getMatchInfo(accountId, startGame):
-		region = "NA1"
+	def getMatchInfo(accountId, region, startGame):
 		matches = requestMatchesById(accountId, region, startGame)
 		matchResults = getMatchResults(matches["matches"], accountId, region)
-		return {"matchResults": matchResults, "totalGames": matches["totalGames"], "numGames": len(matchResults)}
+		return {"matchResults": matchResults, "numGames": len(matchResults)}
 
-	def getPageInfo(summonerName):
-		region = "NA1"
+	def getPageInfo(summonerName, region):
 		QUEUE_TYPE = "RANKED_SOLO_5x5"
 
 		summonerIdResponse = requestSummonerId(summonerName, region)
