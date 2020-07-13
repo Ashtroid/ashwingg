@@ -8,10 +8,12 @@ except ImportError:
         import json
 import os
 import timeago, datetime
-from league.settings import BASE_DIR, API_KEY
+from league.settings import BASE_DIR, API_KEY, lol_patch, lol_version
 from . import config
 from .models import MatchInfo
 from roleidentification import pull_data, get_roles
+import multiprocessing as mp
+from functools import partial
 
 def requestSummonerId(id, region):
 	response = callAPI(id, region, "/lol/summoner/v4/summoners/by-name/")
@@ -28,8 +30,8 @@ def getSummonersInActiveGame(summonerId, region):
 def requestMatchesById(id, region, startGame):
 	startGame = int(startGame)
 	numGames = 5
-	season = 13
-	URL = "https://%s.api.riotgames.com/lol/match/v4/matchlists/by-account/%s?queue=420&beginIndex=%d&endIndex=%d&season=%d&api_key=%s" % (region, id, startGame, startGame + numGames, season, API_KEY)
+	beginTime = 1578477600
+	URL = "https://%s.api.riotgames.com/lol/match/v4/matchlists/by-account/%s?queue=420&beginIndex=%d&endIndex=%d&beginTime=%d&api_key=%s" % (region, id, startGame, startGame + numGames, beginTime, API_KEY)
 	response = requests.get(URL)
 	return response.json()
 
@@ -68,27 +70,6 @@ def gameDuration(seconds):
 		return "%dh %dm %ds" % (hours, minutes, seconds)
 	return " %dm %ds" % (minutes, seconds)
 
-def getRankUrl(tier, rank):
-	tierMap = {
-		"IRON": "1",
-		"BRONZE": "2",
-		"SILVER": "3",
-		"GOLD": "4",
-		"PLATINUM": "5",
-		"DIAMOND": "6",
-		"MASTER": "7",
-		"GRANDMASTER": "8",
-		"CHALLENGER": "9"
-	}
-	rankMap = {
-		"I": "1",
-		"II": "2",
-		"III": "3",
-		"IV": "4",
-		"V": "5"
-	}
-	return "https://cdn2.leagueofgraphs.com/img/league-icons-v2/160/" + tierMap[tier] + "-" + rankMap[rank] + ".png"
-
 def getRunes(stats):
 	map = json.load(open(os.path.join(BASE_DIR, "history/static/runes.json")))
 	rune = map.get(str(stats["perk0"]))
@@ -111,7 +92,7 @@ def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue
 def getCurrentMatchResult(summonerId, region):
 	response = getSummonersInActiveGame(summonerId, region)
 	match = response.json()
-	if response.status_code != 200 or match["gameQueueConfigId"] != 420:
+	if response.status_code != 200 or "gameQueueConfigId" not in match or match["gameQueueConfigId"] != 420:
 		return {"status": 0}
 	result = getLiveMatchData(match, summonerId, region)
 	return {"status": 1, "matchData": [result]}
@@ -119,7 +100,7 @@ def getCurrentMatchResult(summonerId, region):
 def getLiveMatchData(match, summonerId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
-	champToChampName = requests.get("https://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
+	champToChampName = requests.get("%s/%s/data/en_US/champion.json"%(lol_version, lol_patch)).json()["data"]
 	matchInfo = dict()
 	matchInfo["timeStatus"] = timeStatus(match["gameStartTime"])
 	matchInfo["gameDuration"] = "In progress"
@@ -158,9 +139,9 @@ def getLiveMatchData(match, summonerId, region):
 def getMatchResults(matches, accountId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
-	champToChampName = requests.get("https://ddragon.leagueoflegends.com/cdn/10.12.1/data/en_US/champion.json").json()["data"]
+	champToChampName = requests.get("%s/%s/data/en_US/champion.json"%(lol_version, lol_patch)).json()["data"]
 	champion_roles = pull_data()
-	matchList = []
+	database = dict()
 	for match in matches:
 		gameId = match["gameId"]
 		game = MatchInfo.objects.filter(gameId = region + str(gameId))
@@ -168,63 +149,108 @@ def getMatchResults(matches, accountId, region):
 			gameFromDB = game.first()
 			gameData = gameFromDB.getData()
 			matchInfo = json.loads(gameData)
-		else:
-			unsortedChampListBlue = []
-			unsortedChampListRed = []
-			matchInfo = dict()
-			matchInfo["gameId"] = gameId
-			matchData = getMatchData(gameId, region)
-			matchInfo["gameDuration"] = gameDuration(matchData["gameDuration"])
-			matchInfo["gameCreation"] = matchData["gameCreation"]
-			participantDataMap = dict()
-			accountIdToInfo = dict()
-			matchInfo["isComplete"] = True
-			for participant in matchData["participantIdentities"]:
-				data = dict()
-				info = dict()
-				data["summonerName"] = participant["player"]["summonerName"]
-				participantId = participant["participantId"]
-				participantInfo = matchData["participants"][participantId-1]
-				info["spell1Id"] = summonerSpell[str(participantInfo["spell1Id"])]
-				info["spell2Id"] = summonerSpell[str(participantInfo["spell2Id"])]
-				stats = participantInfo["stats"]
-				info["rune"] = getRunes(stats)
-				if matchData["gameDuration"] < 300:
-					matchStatus = "remake"
-				elif stats["win"]:
-					matchStatus = "win"
-				else:
-					matchStatus = "loss"
-				info["matchStatus"] = matchStatus
-				info["KDA"] = str(stats["kills"]) + " / " + str(stats["deaths"]) + " / " + str(stats["assists"])
-				itemList = []
-				for i in range(0, 6):
-					itemList.append(stats["item" + str(i)])
-				info["trinket"] = stats["item6"]
-				info["items"] = itemList
-				championId = matchData["participants"][participantId-1]["championId"]
-				champion = championDict[str(championId)]
-				data["champion"] = champion
-				info["champion"] = champion
-				info["championName"] = champToChampName[champion]["name"]
-				accountIdToInfo[participant["player"]["accountId"]] = info
-				data["accountId"] = participant["player"]["accountId"]
-				participantDataMap[championId] = data
-				if participantId < 6:
-					unsortedChampListBlue.append(championId)
-				else:
-					unsortedChampListRed.append(championId)
-			matchInfo["participantData"] = getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed)
-			matchInfo["infoByAccountId"] = accountIdToInfo
-			jsonStr = json.dumps(matchInfo)
+			database[gameId] = matchInfo
+	matchList = []
+	for match in matches:
+		matchResult = processMatch(region, championDict, summonerSpell, champToChampName, champion_roles, database, match)
+		matchList.append(matchResult)
+	for match in matchList:
+		gameId = match["gameId"]
+		if gameId not in database:
+			jsonStr = json.dumps(match)
 			MatchInfo.objects.create(gameId = region + str(gameId), gameData = jsonStr)
-		matchInfo["timeStatus"] = timeStatus(matchInfo["gameCreation"])
-		infoByAccountId = matchInfo.pop("infoByAccountId")
-		matchInfo["info"] = infoByAccountId[accountId]
-		matchList.append(matchInfo)
+		match["timeStatus"] = timeStatus(match["gameCreation"])
+		infoByAccountId = match.pop("infoByAccountId")
+		match["info"] = infoByAccountId[accountId]
+	return matchList
+
+def processMatch(region, championDict, summonerSpell, champToChampName, champion_roles, database, match):
+	gameId = match["gameId"]
+	if gameId in database:
+		return database[gameId]
+	else:
+		unsortedChampListBlue = []
+		unsortedChampListRed = []
+		matchInfo = dict()
+		matchInfo["gameId"] = gameId
+		matchData = getMatchData(gameId, region)
+		matchInfo["gameDuration"] = gameDuration(matchData["gameDuration"])
+		matchInfo["gameCreation"] = matchData["gameCreation"]
+		participantDataMap = dict()
+		accountIdToInfo = dict()
+		matchInfo["isComplete"] = True
+		for participant in matchData["participantIdentities"]:
+			data = dict()
+			info = dict()
+			data["summonerName"] = participant["player"]["summonerName"]
+			participantId = participant["participantId"]
+			participantInfo = matchData["participants"][participantId-1]
+			info["spell1Id"] = summonerSpell[str(participantInfo["spell1Id"])]
+			info["spell2Id"] = summonerSpell[str(participantInfo["spell2Id"])]
+			stats = participantInfo["stats"]
+			info["rune"] = getRunes(stats)
+			if matchData["gameDuration"] < 300:
+				matchStatus = "remake"
+			elif stats["win"]:
+				matchStatus = "win"
+			else:
+				matchStatus = "loss"
+			info["matchStatus"] = matchStatus
+			info["KDA"] = str(stats["kills"]) + " / " + str(stats["deaths"]) + " / " + str(stats["assists"])
+			itemList = []
+			for i in range(0, 6):
+				itemList.append(stats["item" + str(i)])
+			info["trinket"] = stats["item6"]
+			info["items"] = itemList
+			championId = matchData["participants"][participantId-1]["championId"]
+			champion = championDict[str(championId)]
+			data["champion"] = champion
+			info["champion"] = champion
+			info["championName"] = champToChampName[champion]["name"]
+			accountIdToInfo[participant["player"]["accountId"]] = info
+			data["accountId"] = participant["player"]["accountId"]
+			participantDataMap[championId] = data
+			if participantId < 6:
+				unsortedChampListBlue.append(championId)
+			else:
+				unsortedChampListRed.append(championId)
+		matchInfo["participantData"] = getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed)
+		matchInfo["infoByAccountId"] = accountIdToInfo
+	return matchInfo
+
+def getThreadedMatchResults(matches, accountId, region):
+	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
+	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
+	champToChampName = requests.get("%s/%s/data/en_US/champion.json"%(lol_version, lol_patch)).json()["data"]
+	champion_roles = pull_data()
+	database = dict()
+	for match in matches:
+		gameId = match["gameId"]
+		game = MatchInfo.objects.filter(gameId = region + str(gameId))
+		if game.exists():
+			gameFromDB = game.first()
+			gameData = gameFromDB.getData()
+			matchInfo = json.loads(gameData)
+			database[gameId] = matchInfo
+	pool = mp.Pool()
+	function = partial(processMatch, region, championDict, summonerSpell, champToChampName, champion_roles, database)
+	matchList = pool.map(function, matches)
+	pool.close()
+	pool.join()
+	for match in matchList:
+		gameId = match["gameId"]
+		if gameId not in database:
+			jsonStr = json.dumps(match)
+			MatchInfo.objects.create(gameId = region + str(gameId), gameData = jsonStr)
+		match["timeStatus"] = timeStatus(match["gameCreation"])
+		infoByAccountId = match.pop("infoByAccountId")
+		match["info"] = infoByAccountId[accountId]
 	return matchList
 
 class Container():
+
+	def getRegionList():
+		return ['NA1', 'EUW1', 'KR', 'BR1', 'EUN1', 'JP1', 'LA1', 'LA2', 'OC1', 'TR1', 'RU']
 
 	def getExtendedData(gameId, region):
 		game = MatchInfo.objects.filter(gameId = region + str(gameId)).first()
@@ -237,10 +263,9 @@ class Container():
 				key["accountInfo"] = info[key['accountId']]
 		return participantData
 
-
 	def getMatchInfo(accountId, region, startGame):
 		matches = requestMatchesById(accountId, region, startGame)
-		matchResults = getMatchResults(matches["matches"], accountId, region)
+		matchResults = getThreadedMatchResults(matches["matches"], accountId, region)
 		return {"matchResults": matchResults, "numGames": len(matchResults)}
 
 	def getPageInfo(summonerName, region):
@@ -265,8 +290,9 @@ class Container():
 		accountStats = getAccountStats(id, region)
 		if accountStats == 404:
 			return config.NO_RANK_FOUND
-		jsonDict["ELO"] = accountStats["tier"].lower().capitalize() + " " + accountStats["rank"]
-		jsonDict["rankUrl"] = getRankUrl(accountStats["tier"], accountStats["rank"])
+		tier = accountStats["tier"].lower().capitalize()
+		jsonDict["ELO"] =  tier + " " + accountStats["rank"]
+		jsonDict["rankUrl"] = "https://ashwingg-static.s3.amazonaws.com/ranked-emblems/Emblem_%s.png" % tier
 		jsonDict["LP"] = str(accountStats["leaguePoints"]) + " LP"
 		jsonDict["winloss"] = str(accountStats["wins"]) + "W " + str(accountStats["losses"]) + "L"
 		jsonDict["winPercent"] = str(accountStats["wins"] * 100 // (accountStats["wins"] + accountStats["losses"])) + "%"

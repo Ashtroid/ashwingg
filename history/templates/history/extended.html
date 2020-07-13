@@ -4,7 +4,7 @@
 	<div class = "extendRow">
 		<div class = "championExtend align-mid">
 			<div class = "championPortraitExtend">
-				<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
+				<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png"/>
 			</div>
 		</div>
 		<div class = "playerInfoTextExtend align-mid">
@@ -15,10 +15,10 @@
 		<div class = "runesExtend align-mid">
 			<div class = "d-inline-block">
 				<div class = "itemExtend align-mid">
-					<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{participant.accountInfo.spell1Id}}.png"/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell1Id}}.png"/>
 				</div>
 				<div class = "itemExtend align-mid">
-					<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{participant.accountInfo.spell2Id}}.png"/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell2Id}}.png"/>
 				</div>
 			</div>
 		</div>
@@ -27,15 +27,14 @@
 				{% for item in participant.accountInfo.items %}
 					<div class = "itemExtend align-mid">
 						{% if item != 0 %}
-							<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{item}}.png" 
+							<img src = "{{cdn}}/{{patch}}/img/item/{{item}}.png" 
 							onerror="this.style.display='none'">
 						{% endif %}
 					</div>
 				{% endfor %}
 				<div class = "itemExtend align-mid">
 					{% if item != 0 %}
-						<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{participant.accountInfo.trinket}}.png" 
-						onerror="this.style.display='none'">
+						<img src = "{{cdn}}/{{patch}}/img/item/{{participant.accountInfo.trinket}}.png" onerror="this.style.display='none'">
 					{% endif %}
 				</div>
 			</div>

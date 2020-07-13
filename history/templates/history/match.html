@@ -17,7 +17,7 @@
 		<div class = "champion align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 			<div class = "d-block">
 				<div class = "championPortrait">
-					<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{match.info.champion}}.png" class="rounded-circle"/>
+					<img src="{{cdn}}/{{patch}}/img/champion/{{match.info.champion}}.png" class="rounded-circle"/>
 				</div>
 				<div class = "championText">
 					{{match.info.championName}}
@@ -27,13 +27,13 @@
 		<div class = "summonerSpell align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 			<div class = "d-block">
 				<div class = "summonerSpellIcon">
-					<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell1Id}}.png"/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell1Id}}.png"/>
 				</div>
 				<div class = "summonerSpellIcon">
-					<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/spell/{{match.info.spell2Id}}.png"/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell2Id}}.png"/>
 				</div>
 				<div class = "summonerSpellIcon">
-					<img src="https://ddragon.leagueoflegends.com/cdn/img/{{match.info.rune}}"/>
+					<img src="{{cdn}}/img/{{match.info.rune}}"/>
 				</div>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 					{% for item in match.info.items %}
 						<div class = "item">
 							{% if item != 0 %}
-								<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{item}}.png" 
+								<img src = "{{cdn}}/{{patch}}/img/item/{{item}}.png" 
 								onerror="this.style.display='none'">
 							{% endif %}
 						</div>
@@ -57,7 +57,7 @@
 		<div class = "trinket align-mid" onclick = "showGameExtension('{{match.gameId}}', '{{match.isComplete}}')">
 			{% if match.isComplete %}
 			<div class = "item">
-				<img src = "https://ddragon.leagueoflegends.com/cdn/10.12.1/img/item/{{match.info.trinket}}.png" 
+				<img src = "{{cdn}}/{{patch}}/img/item/{{match.info.trinket}}.png" 
 				onerror="this.style.display='none'">
 			</div>
 			{% endif %}
@@ -68,7 +68,7 @@
 				{% for participant in team %}
 					<div class = "d-block">
 						<div class = "smallImageBox">
-							<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/champion/{{participant.champion}}.png"/>
+							<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png"/>
 						</div>
 						<div class = "playerInfoText">
 							<form action="{% url 'home' %}" method="get">

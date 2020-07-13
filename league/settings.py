@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
+lol_patch = "10.14.1"
+CDN_URL = "https://ashwingg-static.s3.amazonaws.com/dragontail-"
+#CDN_URL = "/dragontail-"
+lol_version = CDN_URL + lol_patch
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -20,6 +25,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 env = environ.Env(
     SECRET_KEY=str,
     API_KEY=str,
+    AWS_ACCESS_KEY_ID=str,
+    AWS_SECRET_ACCESS_KEY=str,
+    AWS_STORAGE_BUCKET_NAME=str,
+    CLOUDFRONT_DOMAIN=str,
+    CLOUDFRONT_ID=str,
+    S3DIRECT_REGION=str,
     DEBUG=(bool,False),
 )
 
@@ -31,13 +42,26 @@ SECRET_KEY = env('SECRET_KEY')
 API_KEY = env('API_KEY')
 DEBUG = env('DEBUG')
 
-SILENCED_SYSTEM_CHECKS = ['urls.W002']
-#ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ashwin.gg']
-ALLOWED_HOSTS = ['*']
+if not DEBUG:
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY') 
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    CLOUDFRONT_DOMAIN = env('CLOUDFRONT_DOMAIN')
+    CLOUDFRONT_ID = env('CLOUDFRONT_ID')
+    S3DIRECT_REGION = env('S3DIRECT_REGION')
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_DEFAULT_ACL = "public-read"
+    AWS_S3_URL = '//s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
+    AWS_PRELOAD_METADATA = False
+    AWS_QUERYSTRING_AUTH = False
+else:
+    AWS_S3_URL = ""
+    lol_version = "http://ddragon.leagueoflegends.com/cdn"
 
-STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
-]
+SILENCED_SYSTEM_CHECKS = ['urls.W002']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ashwin.gg']
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -145,4 +170,5 @@ SECURE_HSTS_SECONDS = 60
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = AWS_S3_URL + '/static/'
+STATIC_ROOT = '/static/'

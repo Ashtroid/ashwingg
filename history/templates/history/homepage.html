@@ -2,6 +2,26 @@
 {% load static %}
 {% block navbar %}{% endblock %}
 {% block body_content %}
+<script type="text/javascript">
+	function changeRegion(region) {
+		if($.active == 0) {
+			$.ajax({
+				type: "POST",
+				url: "{% url 'region' %}",
+				data: {
+		            'region': region,
+		            'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
+		    	},
+				success: function(response) {
+					document.getElementById("regionTarget").innerHTML = response.region;
+				},
+				error: function (response) {
+					alert("There was an error with your request - please try again later");
+				}
+			});
+		}
+	}
+</script>
 <div class = "banner bgGreen">
 	<!-- Modal -->
 	<div class="modal fade" id="regionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -15,36 +35,10 @@
 				</div>
 				<div class="modal-body">
 					{% for regionItem in regions %}
-					<!--
-					<form action = "" id = "changeRegion" method="post">
-						{% csrf_token %}
-						<input type="submit" class="btn bgGreen" value="{{regionItem}}" data-dismiss="modal">
-					</form>-->
 					<button class="btn bgGreen" onclick="changeRegion('{{regionItem}}')" data-dismiss="modal">
 						{% csrf_token %}
 						{{regionItem}}
 					</button>
-					<script type="text/javascript">
-						function changeRegion(region) {
-							//document.getElementById("regionTarget").innerHTML = region;
-							if($.active == 0) {
-								$.ajax({
-									type: "POST",
-									url: "{% url 'region' %}",
-									data: {
-							            'region': region,
-							            'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
-							    	},
-									success: function(response) {
-										document.getElementById("regionTarget").innerHTML = response.region;
-									},
-									error: function (response) {
-										alert("There was an error with your request - please try again later");
-									}
-								});
-							}
-						}
-					</script>
 					{% endfor %}
 				</div>
 			</div>
@@ -75,11 +69,11 @@
 		{% if searches %} Recent Searches {% else %} Welcome to Ashwin.gg, looks like you're new here! {% endif %}
 	</div>
 	{% for search in searches reversed %}
-		<div class="searchHistoryResult">
-			<form action="{% url 'home' %}" method="get">
-				<input type="submit" class="link-button" name="username" value="{{search}}">
-			</form>
-		</div>
+	<div class="searchHistoryResult">
+		<form action="{% url 'home' %}" method="get">
+			<input type="submit" class="link-button" name="username" value="{{search}}">
+		</form>
+	</div>
 	{% endfor %}
 </div>
 {% endblock %}

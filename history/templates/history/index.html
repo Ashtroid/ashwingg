@@ -7,7 +7,8 @@
 			<div class = "profileBox">
 				<div class = "profileHolder">
 					<div class = "profileIcon">
-						<img src="https://ddragon.leagueoflegends.com/cdn/10.12.1/img/profileicon/{{dict.profileIconId}}.png"/>
+						<img src="{{cdn}}/{{patch}}/img/profileicon/{{dict.profileIconId}}.png"/>
+						<!--<img src="{% static '{{cdn}}/{{patch}}/img/profileicon/{{dict.profileIconId}}.png' %}"/>-->
 						<div class = "summonerLevel bgGreen unselectable"> {{dict.summonerLevel}} </div>
 					</div>
 				</div>

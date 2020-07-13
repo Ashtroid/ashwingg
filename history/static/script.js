@@ -14,6 +14,10 @@ function submitSearchForm() {
 }
 
 function loadGames() {
+	loadGames(0);
+}
+
+function loadGames(retry_count) {
 	if($.active != 0) {
 		return;
 	}
@@ -28,12 +32,14 @@ function loadGames() {
             'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val()
     	},
 		success: function(response) {
-			$(".matchContainer").append(response.match_html);
+			$(response.match_html).hide().fadeIn(500).appendTo(".matchContainer");
 			startGame += response.numGames;
 			showLoad();
 		},
 		error: function (response) {
-			showLoad();
+			if(retry_count < 2) {
+				loadGames(retry_count+1);
+			}
 		}
 	});
 }
@@ -59,7 +65,7 @@ function showGameExtension(gameId, isComplete) {
 		game.style.display = "none";
 	} else {
 		if(!isComplete) {
-			game.insertAdjacentHTML('afterbegin', "Game is Still Live");
+			//Live game screen
 		} else if(game.style.display != "none") {
 			$.ajax({
 				type: "POST",
@@ -69,7 +75,8 @@ function showGameExtension(gameId, isComplete) {
 		            'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
 		    	},
 				success: function(response) {
-					game.insertAdjacentHTML('afterbegin', response.extended_html);
+					//game.insertAdjacentHTML('afterbegin', response.extended_html);
+					$(response.extended_html).hide().fadeIn(175).prependTo("#" + gameId);	
 				},
 				error: function (response) {
 				}
