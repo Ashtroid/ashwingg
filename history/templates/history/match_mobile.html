@@ -1,0 +1,59 @@
+{% for match in matchData %}
+<div class="row vw-100 h-match-mobile bg-{{match.info.matchStatus}} border rounded p-1">
+	<div class="col h-100 d-flex align-items-center text-center">
+		<div class="d-block">
+			<h4 class="small">
+				{{match.timeStatus}}
+			</h4>
+			<div class="font-weight-bold small">
+				{% if match.info.matchStatus == "remake" %} REMAKE
+				{% elif match.info.matchStatus == "win" %} VICTORY
+				{% else %} DEFEAT
+				{% endif %}
+			</div>
+			<div class = "small text-muted">
+				{{match.gameDuration}}
+			</div>
+		</div>
+	</div>
+	<div class="col h-100 d-flex align-items-center text-center">
+		<div class="d-block">
+			<img src="{{cdn}}/{{patch}}/img/champion/{{match.info.champion}}.png" height=50px width=50px class="rounded-circle unselectable"/>
+			<div class="small">
+				{{match.info.championName}}
+			</div>
+		</div>
+		<div class="d-block">
+			<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell1Id}}.png" height=24px width=24px class="p-2px"/>
+			<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell2Id}}.png" height=24px width=24px class="p-2px"/>
+		</div>
+		<div class="d-block">
+			<img src = "{{cdn}}/img/{{match.info.runes.all.0}}" height=24px width=24px class="p-2px"/>
+			<img src = "{{cdn}}/img/{{match.info.runes.subRune}}" height=24x width=24px class="p-2px"/>
+		</div>
+	</div>
+	<div class="col h-100 d-flex align-items-center font-weight-bold small">
+		{{match.info.KDA}}
+	</div>
+	<div class="h-100 d-flex align-items-center float-left">
+		<div class="d-inline-block w-item-box-mobile">
+			{% for item in match.info.items %}
+			<div class="item-container-dimensions-mobile d-flex justify-content-center align-items-center p-2px float-left">
+			{% if item != 0 %}
+				<img src="{{cdn}}/{{patch}}/img/item/{{item}}.png" class="item-dimensions-mobile rounded">
+			{% else %}
+				<div class="bg-dark item-dimensions-mobile rounded opacity-light"></div>
+			{% endif %}
+			</div>
+			{% endfor %}
+			<div class="item-container-dimensions-mobile d-flex justify-content-center align-items-center p-2px float-left">
+				{% if match.info.trinket != 0 %}
+					<img src="{{cdn}}/{{patch}}/img/item/{{match.info.trinket}}.png" class="item-dimensions-mobile rounded">
+				{% else %}
+					<div class="bg-dark item-dimensions-mobile rounded opacity-light"></div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}

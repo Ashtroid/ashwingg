@@ -11,19 +11,19 @@ from league.settings import lol_patch, lol_version
 def home(request):
 	searches = request.session.get('searches', [])
 	region = request.session.get('region', 'NA1')
+	regions = Container.getRegionList()
 	if request.method == 'GET' and 'username' in request.GET:
 		username = request.GET['username']
 		if username:
 			response = Container.getPageInfo(username, region)
 			if response == config.NO_RANK_FOUND or response == config.NO_SUMMONER_FOUND or response == config.REQUEST_500:
-				return render(request, 'history/invalid.html', context = {'username': username, 'region': region, 'response': response})
+				return render(request, 'history/invalid.html', context = {'username': username, 'region': region, 'regions': regions, 'response': response})
 			else:
 				summonerName = response['summonerName']
 				searches = LRU().add(summonerName, searches)
 				request.session['searches'] = searches
-				return render(request, 'history/index.html', context = {'dict': response, 'region': region, 'searches': searches, 'cdn': lol_version, 'patch': lol_patch})
-	regions = Container.getRegionList()
-	return render(request, 'history/homepage.html', context = {'region': region, 'searches': searches, 'regions': regions})
+				return render(request, 'history/index.html', context = {'dict': response, 'region': region, 'regions': regions, 'searches': searches, 'cdn': lol_version, 'patch': lol_patch})
+	return render(request, 'history/homepage.html', context = {'searches': searches, 'region': region, 'regions': regions})
 
 @ratelimit(key='ip', rate='30/m', block=True)
 @ratelimit(key='post:username', rate='2/s', block=True)
@@ -32,7 +32,11 @@ def match(request):
 	startGame = request.POST.get('startGame')
 	accountId = request.POST.get('accountId')
 	matchData = Container.getMatchInfo(accountId, region, startGame)
-	match_html = loader.render_to_string('history/match.html', {'matchData': matchData["matchResults"], 'cdn': lol_version, 'patch': lol_patch})
+	if request.user_agent.is_mobile:
+		device_friendly_match_url = 'history/match_mobile.html'
+	else:
+		device_friendly_match_url = 'history/match.html'
+	match_html = loader.render_to_string(device_friendly_match_url, {'matchData': matchData["matchResults"], 'cdn': lol_version, 'patch': lol_patch})
 	output_data = {'match_html': match_html, 'numGames': matchData["numGames"]}
 	return JsonResponse(output_data)
 
@@ -48,11 +52,12 @@ def loadGameExtension(request):
 @ratelimit(key='ip', rate='10/m', block=True)
 def changeRegion(request):
 	request.session['region'] = request.POST.get('region')
-	print(request.session['region'])
 	return JsonResponse({'region': request.session['region']})
 
 def riot(request):
 	return render(request, 'history/riot.txt')
 	
 def FAQ(request):
-	return render(request, 'history/FAQ.html')
+	region = request.session.get('region', 'NA1')
+	regions = Container.getRegionList()
+	return render(request, 'history/FAQ.html', context={'region': region, 'regions': regions})

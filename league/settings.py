@@ -57,7 +57,7 @@ if not DEBUG:
     AWS_QUERYSTRING_AUTH = False
 else:
     AWS_S3_URL = ""
-    lol_version = "http://ddragon.leagueoflegends.com/cdn"
+    lol_version = "https://ddragon.leagueoflegends.com/cdn"
 
 SILENCED_SYSTEM_CHECKS = ['urls.W002']
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ashwin.gg']
@@ -73,7 +73,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'storages'
+    'storages',
+    'django_user_agents',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +85,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'league.urls'
@@ -147,6 +149,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+USER_AGENTS_CACHE = 'default'
 
 TIME_ZONE = 'UTC'
 

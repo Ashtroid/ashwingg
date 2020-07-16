@@ -9,10 +9,6 @@ $("#load-form").submit(function(e) {
 	loadGames();
 });
 
-function submitSearchForm() {
-	document.getElementById("search-form").submit();
-}
-
 function loadGames() {
 	loadGames(0);
 }
@@ -49,12 +45,12 @@ function showLoad() {
 	$(".load").show();
 }
 
-$(window).scroll(function() {
+/*$(window).scroll(function() {
 	if($.active == 0 && $(window).scrollTop() >= $(document).height() - $(window).height()) {
-		// ajax call get data from server and append to the div
+		//ajax call get data from server and append to the div
 		loadGames();
     }
-});
+});*/
 
 function showGameExtension(gameId, isComplete) {
 	var game = document.getElementById(gameId);
@@ -75,7 +71,6 @@ function showGameExtension(gameId, isComplete) {
 		            'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
 		    	},
 				success: function(response) {
-					//game.insertAdjacentHTML('afterbegin', response.extended_html);
 					$(response.extended_html).hide().fadeIn(175).prependTo("#" + gameId);	
 				},
 				error: function (response) {

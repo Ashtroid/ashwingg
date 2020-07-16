@@ -1,0 +1,741 @@
+.bgGreen {
+	background-color: #93FDC1;
+}
+
+.profileIcon img{
+	border-radius: 20%;
+	border: 4px solid #93FDC1;
+}
+
+.textGreen {
+	color: black;
+	display: inline;
+	font-weight: bold;
+}
+
+.textGray {
+	display: inline;
+	color: #222;
+}
+
+.text {
+	font-size: 15px;
+}
+
+.profileBox {
+	border-bottom: 1px solid #DDD;
+	height: 160px;
+}
+
+.profileBox, .searchResultContainer {
+	margin: auto;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+	width: 345px;
+	padding: 20px;
+}
+
+.searchResult {
+	min-width: 345px;
+	max-width: 345px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.navbar {
+	border-bottom: 1px solid #BBB;
+	height: 45px;
+}
+
+.align-mid {
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	float: left;
+  	height: 100%;
+}
+
+.profileHolder {
+	padding: 10px;
+	display: inline-block;
+}
+
+.shell {
+	margin: auto;
+	width: 100%;
+	min-height: calc(100vh - 45px);
+}
+
+.searchBarContainer {
+	cursor: pointer;
+	border-radius: 4px;
+	background-color: white;
+}
+
+.searchButtonHome {
+	cursor: pointer;
+}
+
+.searchButtonContainer, .searchBar, .searchBarContainer {
+	font-size: 15px;
+	height: 34px;
+	border-radius: 1px solid 
+}
+
+.searchButtonContainer {
+	width: 34px;
+	padding: 5px;
+}
+
+.searchButton {
+	height: 24px;
+	width: 24px;
+}
+
+.searchBar {
+	border: transparent;
+	background-color: transparent;
+	padding-right: 10px;
+	padding-left: 15px;
+	width: 200px;
+	color: #666;
+}
+
+.searchBarHomepage {
+	padding: 10px;
+	height: 46px;
+	width: 600px;
+	border: 1px solid #BBB;
+	color: #222;
+	font-size: 20px;
+	text-align: center;
+}
+
+.ashwingg {
+	font-weight: 750;
+	letter-spacing: 0.1em;
+	color: white;
+	font-size: 3em;
+	position: absolute;
+	left: 50%;
+	top: 25%;
+	transform: translate(-50%, 0%);
+
+}
+
+.logo {
+	width: 100%;
+	height: 100px;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
+.searchHeader {
+	width: 100%;
+	height: 40px;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	color: #222;
+  	font-size: 18px;
+  	font-weight: 650;
+  	border-bottom: 1px solid #222;
+}
+
+.logoText {
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: white;
+	font-size: 48px;
+}
+
+.logoText:hover {
+	color: #EEFFEE;
+	text-decoration: none;
+}
+
+.mobileSearchBar {
+	width: 94vw;
+	height: 80px;
+	font-size: 42px;
+	text-align: center;
+	border: transparent;
+	border-radius: 10px;
+}
+
+.nav-mobile {
+	display: none;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.link-button {
+	text-align: left;
+}
+
+.searchHistoryHomepage {
+	left: 50%;
+	top: 55%;
+	transform: translate(-50%, 0%);
+	position: absolute;
+	display: inline-block;
+	padding: 10px;
+	width: 480px;
+}
+
+.searchHistoryResult {
+	font-size: 14px;
+	width: 115px;
+	padding: 5px;
+	height: 40px;
+	float: left;
+	vertical-align: middle;
+}
+
+.homepage {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.banner {
+	height: 50%;
+	width: 100%;
+	position: absolute;
+}
+
+.match, .matchContainer, .gameExtension {
+	margin: auto;
+	min-width: 815px;
+	padding: 6px;
+	padding-bottom: 1px;
+}
+
+.gameExtension {
+	height: 200px;
+	border: 1px solid #BBB;
+	display: none;
+	padding: 0px;
+}
+
+.playerStatsBox {
+	margin: auto;
+}
+
+.loadContainer {
+	height: 45px;
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
+}
+
+.loading, .load {
+	display: none;
+}
+
+.win, .loss, .live, .remake {
+	height: 126px;
+}
+
+.win:hover, .loss:hover, .live:hover, .remake:hover {
+	opacity: 95%;
+	cursor: pointer;
+}
+
+.win, .loss, .live, .remake {
+	border-radius: 8px;
+	border:1px solid #bbb;
+}
+
+.win {
+	background-color: #A8eeA8;
+}
+
+.loss {
+	background-color: #eeA8A8;
+}
+
+.remake {
+	background-color: #DDD;
+}
+
+.live {
+	background-color: #FFFF99;
+	animation-name: color;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+}
+
+@keyframes color {
+  0% {
+    background-color: #FFFF77;
+  }
+  50% {
+    background-color: #FFFFCC;
+  }
+  100% {
+    background-color: #FFFF77;
+  }
+}
+
+.extendBlock {
+	height: 100%;
+	width: 50%;
+	float: left;
+}
+
+.extendRow {
+	height: 20%;
+	width: 100%;
+}
+
+.champion {
+	width: 80px;
+}
+
+.championExtend {
+	width: 35px;
+}
+
+.championPortrait {
+	padding: 5px;
+    height: 80px;
+    width: 80px;
+}
+
+.championPortraitExtend {
+    height: 30px;
+    width: 30px;
+}
+
+.championText {
+	text-align: center;
+	font-size: 13px;
+}
+
+.summonerSpell {
+	width: 30px;
+}
+
+.summonerSpellIcon {
+	height: 27px;
+	width: 27px;
+	padding: 2px;
+}
+
+.rankContainer {
+	height: 100px;
+	width: 100px;
+	position: relative;
+}
+
+.KDA {
+	width: 90px;
+	font-size: 16px;
+}
+
+.smallImageBox {
+	float: left;
+	width: 19px;
+	height: 19px;
+}
+
+.playerInfoText {
+	display: inline-block;
+	padding-left: 1px;
+	font-size: 12px;
+	width: 125px;
+	vertical-align: middle;
+}
+
+.playerInfoTextExtend {
+	width: 80px;
+}
+
+.playerNameExtend {
+	font-size: 16px;
+}
+
+.KDAExtend {
+	text-align: right;
+	height: 12px;
+	font-size: 10px;
+	color: #555;
+}
+
+.playerInfo {
+	width: 148px;
+}
+
+.time {
+	font-size: 13px;
+	text-align: center;
+	width: 120px;
+}
+
+.durationFont {
+	color: #555;
+	font-size: 11px;
+}
+
+.statusOfMatch {
+	padding-top: 16px;
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.items {
+	padding-left: 5px;
+	width: 113px;
+}
+
+.itemsExtend {
+	width: 175px;
+}
+
+.runesExtend {
+	width: 75px;
+}
+
+.trinket {
+	width: 51px;
+	padding-right: 15px;
+}
+
+.item {
+	border: 1px solid #BBB;
+	height: 36px;
+	width: 36px;
+	padding: 2px;
+	float: left;
+	background-color: #DDD;
+}
+
+.itemExtend {
+	border: 1px solid #BBB;
+	height: 25px;
+	width: 25px;
+	padding: 2px;
+	float: left;
+	background-color: #DDD;
+}
+
+.profileIcon {
+	position: relative;
+	height: 100px;
+	width: 100px;
+}
+
+p {
+	color: #222;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+.FAQ p {
+	margin-bottom: 30px;
+	font-weight: 100;
+	letter-spacing: 1px;
+}
+
+.FAQ a {
+	font-weight: 300;
+}
+
+.FAQ {
+	width: 80%;
+	margin: auto;
+}
+
+.heading {
+	margin-top: 10px;
+	color: #000;
+	font-size: 30px;
+	font-weight: 100;
+	letter-spacing: 2px;
+	margin-bottom: 3px;
+	text-align: center;
+}
+
+.footer {
+	float: left;
+	padding: 5px;
+	font-size: 10px;
+	color: #AAA;
+	text-align: center;
+}
+
+.summonerLevel {
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	border-radius: 50%;
+	position: absolute;
+	bottom: -8px;
+  	left: 50%;
+  	transform: translate(-50%, 0);
+	padding: 6px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.arrow {
+	width: 42px;
+	font-size: 22px;
+	color: #444;
+	border-left: 1px solid white;
+	opacity: 40%;
+}
+
+.arrow:hover {
+	opacity: 100%;
+}
+
+.flip { 
+	transform: rotate(180deg);
+	-webkit-transition: 300ms ease all;
+    -moz-transition: 300ms ease all;
+    -o-transition: 300ms ease all;
+    transition: 300ms ease all;
+}
+
+.link-button {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	background: none;
+    border: none;
+    color: #222;
+    cursor: pointer;
+    width: 115px;
+}
+
+.link-button:hover {
+	text-decoration: underline;
+}
+	
+a {
+	color: #222;
+	letter-spacing: 1px;
+}
+
+a:hover {
+	color: #000;
+}
+
+.nav-link {
+	color: #00626E;
+	width: 110px;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.nav-item a:hover {
+	color: white;
+}
+
+.btn-link {
+	color: #222;
+}
+
+.btn-link:hover {
+	color: #000;
+}
+
+img {
+    width: 100%;
+    height: 100%
+}
+
+input:focus, textarea:focus, select:focus{
+	outline: none;
+}
+
+
+.modal-dialog {
+	width: 50%;
+}	
+
+.modal .btn {
+	font-weight: 450;
+	font-size: 16px;
+}
+
+.modal {
+	text-align: center;
+	color: black;
+}
+
+.matchStatsBox {
+	margin: auto;
+}
+
+.region {
+	width: 46px;
+	height: 46px;
+	border: 1px solid #BBB;
+	background-color: white;
+	color: #00626E;
+	font-size: 28px;
+	font-weight: 850;
+}
+
+.btnSize {
+	width: 56px;
+	height: 56px;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.btn:focus {
+	box-shadow: none;
+}
+
+@media only screen and (min-width: 1200px) {
+
+	.playerStats, .matchStats {
+		float: left;
+	}
+
+	.playerStats {
+		min-width: 350px;
+	}
+
+	.matchStats {
+		margin: auto;
+		width: 850px;
+	}
+
+	.shellBox {
+		margin: auto;
+		width: 1200px;
+	}
+
+}
+
+@media only screen and (max-width: 1199px) {
+
+	.region {
+		width: 56px;
+		height: 56px;
+	}
+
+	.shell {
+		min-height: calc(100vh - 300px);
+	}
+
+	.profileIcon img{
+		border: 2px solid #3d65ad;
+	}
+
+	.bgGreen {
+		background-color: #d7e5ff;
+		color: white;
+	}
+
+	.nav-mobile {
+		display: block;
+	}
+
+	.notMobile {
+		display: none;
+	}
+
+	.profileBox {
+		float: left;
+	}
+
+	.playerStatsBox {
+		width: 690px;
+		height: 160px;
+	}
+
+
+	.match, .matchContainer, .gameExtension {
+		min-width: 900px;
+		max-width: 1000px;
+		width: 100%;
+		padding-left: 3px;
+		padding-right: 3px;
+	}
+
+	.matchStatsBox {
+		width: 100vw;
+	}
+
+	.win, .loss, .live, .remake {
+		height: 160px;
+	}
+
+	.time {
+		width: 15%;
+		font-size: 19px;
+	}
+
+	.durationFont {
+		font-size: 17px;
+	}
+
+	.statusOfMatch {
+		font-size: 20px;
+	}
+
+	.champion {
+		width: 10%;
+	}
+
+	.championText {
+		font-size: 16px;
+	}
+
+	.KDA {
+		width: 12%;
+		font-size: 18px;
+	}
+
+	.playerInfo {
+		width: 20%;
+	}
+
+	.playerInfoText {
+		width: calc(100% - 26px);
+		height: 31px;
+		font-size: 16px;
+	}
+
+	.link-button {
+		width: 150px;
+	}
+
+	.smallImageBox {
+		height: 26px;
+		width: 26px;
+	}
+
+	.arrow {
+		width: calc(23% - 195px);
+	}
+
+	.searchBarHomepage {
+		width: 80vw;
+		height: 56px;
+		font-size: 28px;
+		color: #222;
+	}
+
+	.ashwingg {
+		font-size: 4em;
+	}
+}

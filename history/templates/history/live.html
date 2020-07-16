@@ -1,0 +1,14 @@
+timeStamp = {{match.gameDelta}}
+{% for team in match.participantData %}
+<div class="team">
+	{% for player in team %}
+	<p>
+		summonerName = {{player.summonerName}},
+		champion = {{player.champion}},
+		spell1 = {{player.spell1Id}},
+		spell2 = {{player.spell2Id}},
+		rune = {{player.rune}}
+	</p>
+	{% endfor %}
+</div>
+{% endfor %}
