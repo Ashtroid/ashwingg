@@ -165,3 +165,7 @@
 .opacity-light {
 	opacity: 0.5;
 }
+
+.max-width {
+	max-width: 1350px;
+}

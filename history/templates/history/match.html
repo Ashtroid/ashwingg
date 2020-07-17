@@ -7,12 +7,12 @@
 					{{match.timeStatus}}
 				</h4>
 				<div class="font-weight-bold">
-					{% if match.info.matchStatus == "remake" %} REMAKE
-					{% elif match.info.matchStatus == "win" %} VICTORY
-					{% else %} DEFEAT
+					{% if match.info.matchStatus == "remake" %}<div class="text-dark"> REMAKE</div>
+					{% elif match.info.matchStatus == "win" %} <div class="text-primary">VICTORY</div>
+					{% else %} <div class="text-danger">DEFEAT</div>
 					{% endif %}
 				</div>
-				<div class = "small text-muted">
+				<div class = "small text-secondary">
 					{{match.gameDuration}}
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 		<div class="w-items h-100 d-flex justify-content-center align-items-center float-left">
 			<div class="d-inline-block w-item-box">
 			{% for item in match.info.items %}
-				<div class="item-container-dimensions d-flex justify-content-center align-items-center p-2px float-left">
+				<div class="item-container-dimensions d-flex justify-content-center align-items-center float-left">
 				{% if item != 0 %}
 					<img src="{{cdn}}/{{patch}}/img/item/{{item}}.png" class="item-dimensions rounded">
 				{% else %}
@@ -52,7 +52,7 @@
 				</div>
 			{% endfor %}
 			</div>
-			<div class="item-container-dimensions d-flex justify-content-center align-items-center p-2px float-left">
+			<div class="item-container-dimensions d-flex justify-content-center align-items-center float-left">
 				{% if match.info.trinket != 0 %}
 					<img src="{{cdn}}/{{patch}}/img/item/{{match.info.trinket}}.png" class="item-dimensions rounded">
 				{% else %}
