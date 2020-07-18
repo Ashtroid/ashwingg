@@ -35,6 +35,8 @@ function loadGames(retry_count) {
 		error: function (response) {
 			if(retry_count < 2) {
 				loadGames(retry_count+1);
+			} else {
+				showLoad();
 			}
 		}
 	});

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse	
 from django.template import loader
 from .functions import Container
 from . import config
@@ -32,13 +32,16 @@ def match(request):
 	startGame = request.POST.get('startGame')
 	accountId = request.POST.get('accountId')
 	matchData = Container.getMatchInfo(accountId, region, startGame)
-	if request.user_agent.is_mobile:
-		device_friendly_match_url = 'history/match_mobile.html'
+	if matchData['status_code'] == "200":
+		if request.user_agent.is_mobile:
+			device_friendly_match_url = 'history/match_mobile.html'
+		else:
+			device_friendly_match_url = 'history/match.html'
+		match_html = loader.render_to_string(device_friendly_match_url, {'matchData': matchData["matchResults"], 'cdn': lol_version, 'patch': lol_patch})
+		output_data = {'match_html': match_html, 'numGames': matchData["numGames"]}
+		return JsonResponse(output_data)
 	else:
-		device_friendly_match_url = 'history/match.html'
-	match_html = loader.render_to_string(device_friendly_match_url, {'matchData': matchData["matchResults"], 'cdn': lol_version, 'patch': lol_patch})
-	output_data = {'match_html': match_html, 'numGames': matchData["numGames"]}
-	return JsonResponse(output_data)
+		return HttpResponse(status=matchData['status_code']) 
 
 @ratelimit(key='ip', rate='10/m', block=True)
 def loadGameExtension(request):

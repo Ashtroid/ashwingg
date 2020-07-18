@@ -75,6 +75,23 @@
 	var match = "{% url 'match' %}";
 	var extended = "{% url 'extended' %}";
 	var accountId = "{{dict.accountId}}";
+	function convertToTime(s) {
+		var h = Math.floor(s/3600); //Get whole hours
+		s -= h*3600;
+		var m = Math.floor(s/60); //Get remaining minutes
+		s -= m*60;
+		if(h < 1) {
+			return m+":"+(s < 10 ? '0'+s : s)
+		}
+		return h+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s);
+	}
+	{% if dict.isInGame	%}
+	var liveGameTime = "{{dict.matchData.gameDelta}}";
+	setInterval(function () {
+		liveGameTime++;
+		$(".liveGameDuration").text(convertToTime(liveGameTime));
+	}, 1000);
+	{% endif %}
 </script>
 <script type="text/javascript" src="{% static 'script.js' %}"></script>
 {% endblock %}

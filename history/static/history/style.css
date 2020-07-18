@@ -15,7 +15,7 @@
 }
 
 .bg-win {
-	background-color: #A8eeA8;
+	background-color: #9FFF99;
 }
 
 .bg-loss {
@@ -26,11 +26,12 @@
 	background-color: #DDD;
 }
 
+.bg-gray {
+	background-color: #EEE;	
+}
+
 .bg-live {
-	background-color: #FFFF99;
-	animation-name: color;
-	animation-duration: 3s;
-	animation-iteration-count: infinite;
+	background-color: #EFFDCF;
 }
 
 .searchBarContainer {
@@ -79,6 +80,10 @@
 
 .h-match {
 	height: 145px;
+}
+
+.w-match {
+	width: 850px;
 }
 
 .h-match-mobile {
@@ -152,6 +157,10 @@
 
 .h-20 {
 	height: 20%;
+}
+
+.h-liveParticipant {
+	height: 180px;
 }
 
 .p-2px {

@@ -1,13 +1,15 @@
-{% extends 'history/base.html' %}
+{% extends 'history/base_template.html' %}
 {% load static %}
-{% block body_content %}
-	<div class = "shell">
-		{% if response == "No-Summoner-Found" %}
-			Summoner <b>{{username}}</b> could not be found!
-		{% elif response == "Request-Not-Processed" %}
-			Request for  <b>{{username}}</b> could not be processed.
-		{% else %}
-			Summoner <b>{{username}}</b> is unranked!
-		{% endif %}
-	</div>
+{% block content %}
+<div class="container vh-100">
+	<div class="d-flex justify-content-center align-content-center p-5 bg text-dark">
+	{% if response == "No-Summoner-Found" %}
+		<h5>Summoner <div class="d-inline font-weight-bold text-danger mx-1"> {{username}} </div> could not be found!</h5>
+	{% elif response == "Request-Not-Processed" %}
+		Request for  <b>{{username}}</b> could not be processed.
+	{% else %}
+		Summoner <b>{{username}}</b> is unranked!
+	{% endif %}
+</div>
+</div>
 {% endblock %}
