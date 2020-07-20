@@ -22,12 +22,12 @@ def home(request):
 				summonerName = response['summonerName']
 				searches = LRU().add(summonerName, searches)
 				request.session['searches'] = searches
-				return render(request, 'history/index.html', context = {'dict': response, 'region': region, 'regions': regions, 'searches': searches, 'cdn': lol_version, 'patch': lol_patch})
+				return render(request, 'history/index.html', context = {'dict': response, 'region': region, 'regions': regions, 'is_mobile': request.user_agent.is_mobile,'searches': searches, 'cdn': lol_version, 'patch': lol_patch})
 	return render(request, 'history/homepage.html', context = {'searches': searches, 'region': region, 'regions': regions})
 
 @ratelimit(key='ip', rate='30/m', block=True)
 @ratelimit(key='post:username', rate='2/s', block=True)
-def match(request):
+def loadMatches(request):
 	region = request.session.get('region', 'NA1')
 	startGame = request.POST.get('startGame')
 	accountId = request.POST.get('accountId')
@@ -57,6 +57,18 @@ def changeRegion(request):
 	request.session['region'] = request.POST.get('region')
 	return JsonResponse({'region': request.session['region']})
 
+@ratelimit(key='post:username', rate='6/m', block=True)
+def checkLiveStatus(request):
+	summonerId = request.POST.get('summonerId')
+	region = request.POST.get('region')
+	isInGameFunction = Container.isInGame(summonerId, region)
+	if request.POST.get('isInGame') == "true":
+		isInGamePOST = True
+	else:
+		isInGamePOST = False
+	shouldRefresh = isInGameFunction != isInGamePOST
+	return JsonResponse({'shouldRefresh': shouldRefresh})
+
 def riot(request):
 	return render(request, 'history/riot.txt')
 	
@@ -64,3 +76,15 @@ def FAQ(request):
 	region = request.session.get('region', 'NA1')
 	regions = Container.getRegionList()
 	return render(request, 'history/FAQ.html', context={'region': region, 'regions': regions})
+
+def legal(request):
+	region = request.session.get('region', 'NA1')
+	regions = Container.getRegionList()
+	return render(request, 'history/legal.html', context={'region': region, 'regions': regions})
+
+def live_game(request):
+	region = request.session.get('region', 'NA1')
+	regions = Container.getRegionList()
+	return render(request, 'history/live_game.html', context={'region': region, 'regions': regions})
+
+

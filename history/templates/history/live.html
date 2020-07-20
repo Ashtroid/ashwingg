@@ -1,5 +1,5 @@
 <div class="d-flex w-match justify-content-center align-items-center bg-dark p-1">
-	<div class="d-inline text-light liveGameDuration">Loading...</div>
+	<a class="d-inline text-light liveGameDuration" href="{% url 'live_game' %}">Loading...</a>
 </div>
 <div class="d-flex w-match justify-content-center align-items-center bg-live border">
 	{% for team in match.participantData %}

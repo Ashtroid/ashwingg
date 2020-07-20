@@ -52,7 +52,11 @@
 				<div class="d-block">
 					<div class="matchContainer my-2 container-fluid">
 						{% if dict.isInGame %}
-							{% include "history/live.html" with match=dict.matchData %}
+							{% if is_mobile %}
+								{% include "history/live_mobile.html" with match=dict.matchData %}
+							{% else %}
+								{% include "history/live.html" with match=dict.matchData %}
+							{% endif %}
 						{% endif %}
 					</div>
 					<div class="d-flex justify-content-center">
@@ -74,7 +78,10 @@
 <script type="text/javascript">
 	var match = "{% url 'match' %}";
 	var extended = "{% url 'extended' %}";
+	var live = "{% url 'live' %}";
+	var summonerId = "{{dict.summonerId}}"
 	var accountId = "{{dict.accountId}}";
+	var region = "{{dict.region}}"
 	function convertToTime(s) {
 		var h = Math.floor(s/3600); //Get whole hours
 		s -= h*3600;
@@ -89,8 +96,11 @@
 	var liveGameTime = "{{dict.matchData.gameDelta}}";
 	setInterval(function () {
 		liveGameTime++;
-		$(".liveGameDuration").text(convertToTime(liveGameTime));
+		$(".liveGameDuration").text("Live Game ("+convertToTime(liveGameTime)+")");
 	}, 1000);
+	var isInGame = true;
+	{% else %}
+	var isInGame = false;
 	{% endif %}
 </script>
 <script type="text/javascript" src="{% static 'script.js' %}"></script>

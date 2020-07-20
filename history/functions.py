@@ -55,8 +55,6 @@ def callAPI(id, region, APIUrl):
 	return requests.get(URL)
 
 def timeStatus(epochTime):
-	if epochTime == 0:
-		return "Loading Screen"
 	date = datetime.datetime.fromtimestamp(epochTime//1000)
 	now = datetime.datetime.now()
 	return timeago.format(date, now)
@@ -87,6 +85,7 @@ def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue
 	for team in teams:
 		participantDataList = []
 		for role in roles:
+			participantDataMap[team[role]]['role'] = role
 			participantDataList.append(participantDataMap[team[role]])
 		participantData.append(participantDataList)
 	return participantData
@@ -100,12 +99,21 @@ def getCurrentMatchResult(summonerId, region):
 	result = getLiveMatchData(match, summonerId, region)
 	return {"status": 1, "matchData": result}
 
+def getCurrentMatchResultBoolean(summonerId, region):
+	response = getSummonersInActiveGame(summonerId, region)
+	match = response.json()
+	return response.status_code == 200 and "gameQueueConfigId" in match and match["gameQueueConfigId"] == 420
+
 def getLiveMatchData(match, summonerId, region):
 	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
 	map = json.load(open(os.path.join(BASE_DIR, "history/static/runes.json")))
 	matchInfo = dict()
-	matchInfo["gameDelta"] = int(datetime.datetime.now().timestamp() - match["gameStartTime"]//1000)
+	gameStartTime = match["gameStartTime"]
+	if gameStartTime == 0:
+		matchInfo["gameDelta"] = 0
+	else:
+		matchInfo["gameDelta"] = int(datetime.datetime.now().timestamp() - gameStartTime//1000)
 	participantDataMap = dict()
 	champion_roles = pull_data()
 	unsortedChampListBlue = []
@@ -268,6 +276,9 @@ class Container():
 		matchResults = getThreadedMatchResults(matches["matches"], accountId, region)
 		return {"matchResults": matchResults, "numGames": len(matchResults), "status_code": '200'}
 
+	def isInGame(summonerId, region):
+		return getCurrentMatchResultBoolean(summonerId, region)
+
 	def getPageInfo(summonerName, region):
 		QUEUE_TYPE = "RANKED_SOLO_5x5"
 
@@ -281,10 +292,12 @@ class Container():
 		jsonDict = dict()
 		id = summonerId["id"]
 		currentMatchResult = getCurrentMatchResult(id, region)
-		jsonDict["isInGame"] = False 
+		jsonDict["isInGame"] = False
 		if currentMatchResult["status"] == 1:
 			jsonDict["isInGame"] = True
 			jsonDict["matchData"] = currentMatchResult["matchData"]
+		jsonDict["summonerId"] = id
+		jsonDict["region"] = region
 		jsonDict["accountId"] = summonerId["accountId"]
 		jsonDict["summonerName"] = summonerId["name"]
 		jsonDict["profileIconId"] = summonerId["profileIconId"]

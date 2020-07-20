@@ -14,9 +14,6 @@ function loadGames() {
 }
 
 function loadGames(retry_count) {
-	if($.active != 0) {
-		return;
-	}
 	$(".load").hide();
 	$(".loading").fadeIn();
 	$.ajax({
@@ -47,12 +44,25 @@ function showLoad() {
 	$(".load").show();
 }
 
-/*$(window).scroll(function() {
-	if($.active == 0 && $(window).scrollTop() >= $(document).height() - $(window).height()) {
-		//ajax call get data from server and append to the div
-		loadGames();
-    }
-});*/
+setInterval(function () {
+	$.ajax({
+		type: "POST",
+		url: live,
+		data: {
+			'summonerId': summonerId,
+			'region': region,
+			'isInGame': isInGame,
+			'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val()
+		},
+		success: function(response) {
+			if(response.shouldRefresh) {
+				window.location.reload();
+			}
+		},
+		error: function (response) {
+		}
+	});
+}, 10000);
 
 function showGameExtension(gameId, isComplete) {
 	var game = document.getElementById(gameId);
