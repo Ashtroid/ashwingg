@@ -99,7 +99,7 @@
 		</button>
 		{% endblock %}
 		{% block navbar-search %}
-		<form class="form-inline my-2 d-none d-md-block mr-1">
+		<form action="{% url 'home' %}" class="form-inline my-2 d-none d-md-block mr-1">
 			<input name="username" class="form-control mr-1" type="search" placeholder="Summoner Name" aria-label="Search" maxlength="16" autocomplete="off" spellcheck="false">
 			<button class="btn bg-light-blue font-weight-bold text-dark-blue" type="submit">Search</button>
 		</form>

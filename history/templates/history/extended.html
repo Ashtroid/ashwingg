@@ -1,45 +1,81 @@
-{% for team in participantData %}
-<div class = "extendBlock">
-	{% for participant in team %}
-	<div class = "extendRow">
-		<div class = "championExtend align-mid">
-			<div class = "championPortraitExtend">
-				<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png"/>
-			</div>
-		</div>
-		<div class = "playerInfoTextExtend align-mid">
-			<div class = "playerNameExtend">
-				{{participant.accountInfo.KDA}}
-			</div>
-		</div>
-		<div class = "runesExtend align-mid">
-			<div class = "d-inline-block">
-				<div class = "itemExtend align-mid">
-					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell1Id}}.png"/>
+<div class="d-flex">
+	{% for team in participantData %}
+	<div class="d-block w-50 h-game">
+		{% for participant in team %}
+		<div class="d-block">
+			<div class="d-flex w-100 h-20 justify-content-center align-items-center small">
+				<div>
+					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png" height=24px width=24px/>
 				</div>
-				<div class = "itemExtend align-mid">
-					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell2Id}}.png"/>
+				<div class="w-playerInfoText">
+					<form action="{% url 'home' %}" method="get">
+						<input type="submit" class="btn btn-link text-dark font-size-13px w-100 d-block text-truncate text-left float-left p-1" value="{{participant.summonerName}}" name="username">
+					</form>
 				</div>
-			</div>
-		</div>
-		<div class = "itemsExtend align-mid">
-			<div class = "d-inline-block">
-				{% for item in participant.accountInfo.items %}
-					<div class = "itemExtend align-mid">
-						{% if item != 0 %}
-							<img src = "{{cdn}}/{{patch}}/img/item/{{item}}.png" 
-							onerror="this.style.display='none'">
-						{% endif %}
+				<div>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell1Id}}.png" height=20px width=20px/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell2Id}}.png" height=20px width=20px/>
+				</div>
+				<div class="mx-3">
+					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.accountId}}_runes_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
+					<!-- Runes Modal -->
+					<div class="modal fade" id="{{participant.accountId}}_runes_modal" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<div class="w-100 text-center">
+										<h5 class="modal-title">{{participant.summonerName}}</h5>
+									</div>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body container">
+									<div class="row">
+										<div class="col d-flex justify-content-center align-items-center">
+										{% for rune in participant.accountInfo.runes.all %}
+											<img src="{{cdn}}/img/{{rune}}" height=34px width=34px class="p-2px"/>
+										{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				{% endfor %}
-				<div class = "itemExtend align-mid">
-					{% if item != 0 %}
-						<img src = "{{cdn}}/{{patch}}/img/item/{{participant.accountInfo.trinket}}.png" onerror="this.style.display='none'">
-					{% endif %}
+				</div>
+				<div class="font-weight-bold w-KDA-extended">{{participant.accountInfo.KDA}}</div>
+				<div class="mx-1">
+					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.accountId}}_items_modal" aria-haspopup="true" aria-expanded="false">Items</button>
+					<!-- Items Modal -->
+					<div class="modal fade" id="{{participant.accountId}}_items_modal" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<div class="w-100 text-center">
+										<h5 class="modal-title">{{participant.summonerName}}</h5>
+									</div>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body container">
+									<div class="row">
+										<div class="col d-flex justify-content-center align-items-center">
+										{% for item in participant.accountInfo.items %}
+											{% if item != 0%}
+											<img src="{{cdn}}/{{patch}}/img/item/{{item}}.png" height=34px width=34px class="p-2px">
+											{% endif %}
+										{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+		{% endfor %}
 	</div>
 	{% endfor %}
 </div>
-{% endfor %}

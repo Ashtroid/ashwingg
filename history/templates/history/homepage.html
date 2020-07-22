@@ -19,7 +19,7 @@
 		<div class="row">
 			{% for search in searches reversed %}
 			<div class="col-4 col-lg-2">
-				<form action="{% url 'home' %}" method="get" class="d-flex justify-content-center">
+				<form method="get" class="d-flex justify-content-center">
 					<input type="submit" class="btn btn-link text-dark" name="username" value="{{search}}">
 				</form>
 			</div>

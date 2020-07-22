@@ -62,11 +62,11 @@ setInterval(function () {
 		error: function (response) {
 		}
 	});
-}, 10000);
+}, 60000);
 
 function showGameExtension(gameId, isComplete) {
 	var game = document.getElementById(gameId);
-	var arrow = document.getElementById("a" + gameId)
+	var arrow = document.getElementById("a_" + gameId)
 	$(arrow).toggleClass('flip');
 	var display = game.style.display;
 	if(game.style.display == "block") {

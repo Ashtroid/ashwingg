@@ -48,7 +48,11 @@ def loadGameExtension(request):
 	region = request.session.get('region', 'NA1')
 	gameId = request.POST.get('gameId')
 	extendedData = Container.getExtendedData(gameId, region)
-	extended_html = loader.render_to_string('history/extended.html', {'participantData': extendedData, 'cdn': lol_version, 'patch': lol_patch})
+	if request.user_agent.is_mobile:
+		device_friendly_extended_url = 'history/extended_mobile.html'
+	else:
+		device_friendly_extended_url = 'history/extended.html'
+	extended_html = loader.render_to_string(device_friendly_extended_url, {'participantData': extendedData, 'cdn': lol_version, 'patch': lol_patch})
 	output_data = {'extended_html': extended_html}
 	return JsonResponse(output_data)
 

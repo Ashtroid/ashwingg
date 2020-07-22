@@ -35,7 +35,7 @@
 	<div class="col h-100 d-flex align-items-center font-weight-bold small">
 		<div class="d-block text-center">
 			{{match.info.KDA}}
-			<button class="btn btn-dark font-weight-bold font-size-13px p-1 my-1">More <i class="fa fa-angle-down"></i></button>
+			<button class="btn btn-dark font-weight-bold font-size-13px p-1 my-1" type="button" data-toggle="collapse" data-target="#dropdown_{{match.gameId}}" aria-expanded="false" id="dropdown_button_{{match.gameId}}">More <i class="fa fa-angle-down"></i></button>
 		</div>
 	</div>
 	<div class="h-100 d-flex align-items-center float-left">
@@ -59,4 +59,32 @@
 		</div>
 	</div>
 </div>
+<div class="collapse row vw-100" id="dropdown_{{match.gameId}}">
+	<div class="col card card-body p-1" id="content_{{match.gameId}}"></div>
+</div>
+<script type="text/javascript">
+	$('#dropdown_button_{{match.gameId}}').on("click", function() {
+		if($('#content_{{match.gameId}}').html() == "") {
+			$.ajax({
+				type: "POST",
+				url: extended,
+				data: {
+					'gameId': '{{match.gameId}}',
+					'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
+		    	},
+				success: function(response) {
+					$("#content_{{match.gameId}}").html(response.extended_html);
+				},
+				error: function (response) {
+				}
+			});
+		}
+		var isVisible = $('#content_{{match.gameId}}').is(":visible");
+		if(isVisible) {
+			$('#dropdown_button_{{match.gameId}}').html('More <i class="fa fa-angle-down"></i>');
+		} else {
+			$('#dropdown_button_{{match.gameId}}').html('Less <i class="fa fa-angle-up"></i>');
+		}
+	});
+</script>
 {% endfor %}

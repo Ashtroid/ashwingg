@@ -41,7 +41,7 @@
 					</h5>
 					{% for search in searches reversed %}
 					<div class="col-4">
-						<form action="{% url 'home' %}" method="get" class="d-flex justify-content-center small">
+						<form method="get" class="d-flex justify-content-center small">
 							<input type="submit" class="btn btn-link text-dark font-weight-light" name="username" value="{{search}}">
 						</form>
 					</div>

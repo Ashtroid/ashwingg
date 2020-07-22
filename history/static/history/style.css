@@ -131,6 +131,10 @@
 	width: 100px;
 }
 
+.w-KDA-extended {
+	width: 65px;
+}
+
 .w-items {
 	width: 140px;
 }
@@ -159,7 +163,7 @@
 	height: 20%;
 }
 
-.h-liveParticipant {
+.h-game {
 	height: 180px;
 }
 
@@ -177,4 +181,14 @@
 
 .max-width {
 	max-width: 1350px;
+}
+
+.flip {
+	transform: rotate(180deg);
+}
+
+.arrow {
+	-moz-transition: transform 0.2s;
+	-webkit-transition: transform 0.2s;
+	transition: transform 0.2s;
 }

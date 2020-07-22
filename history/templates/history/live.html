@@ -4,22 +4,22 @@
 <div class="d-flex w-match justify-content-center align-items-center bg-live border">
 	{% for team in match.participantData %}
 	<div class="w-50">
-		<div class="d-block h-liveParticipant">
+		<div class="d-block h-game">
 			{% for participant in team %}
 			<div class="w-100 h-20 d-flex justify-content-center align-items-center">
 				<div class="d-inline float-left">
 					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png" height=24px width=24px/>
 				</div>
-				<div class="d-inline w-playerInfoText float-left">
+				<div class="w-playerInfoText">
 					<form action="{% url 'home' %}" method="get">
 						<input type="submit" class="btn btn-link text-dark font-size-13px w-100 d-block text-truncate text-left float-left p-1" value="{{participant.summonerName}}" name="username">
 					</form>
 				</div>
-				<div class="d-inline float-left">
+				<div>
 					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell1Id}}.png" height=20px width=20px/>
 					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell2Id}}.png" height=20px width=20px/>
 				</div>
-				<div class="d-inline mx-4">
+				<div class="mx-4">
 					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.summonerId}}_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
 					<!-- Modal -->
 					<div class="modal fade" id="{{participant.summonerId}}_modal" tabindex="-1" role="dialog" aria-hidden="true">
