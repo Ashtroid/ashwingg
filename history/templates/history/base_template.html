@@ -83,7 +83,7 @@
 					<a class="nav-link" href="#">Lobby</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Live Game</a>
+					<a class="nav-link" href="{% url 'live_game' %}">Live Game</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="{% url 'FAQ' %}">FAQ</a>
@@ -112,12 +112,12 @@
 	{% block content %}{% endblock %}
 	</div>
 	{% block footer %}
-	<div class = "d-flex justify-content-center">
+	<div class = "footer d-flex justify-content-center">
 		<div class = "p-2 w-75 border-top small">
 			<div class="d-inline mr-2 mr-sm-3"><a href="{% url 'legal' %}#privacy" class="text-dark">Privacy</a></div>
 			<div class="d-inline mr-2 mr-sm-3"><a href="{% url 'legal' %}#license" class="text-dark">License</a></div>
-			<div class="d-inline mr-2 mr-sm-3"><a href="{% url 'legal' %}#terms_and_conditions" class="text-dark">Terms and Conditions</a></div>
-			<div class="d-inline"><a href="{% url 'legal' %}#contact" class="text-dark">Contact</a></div>
+			<div class="d-inline mr-2 mr-sm-3"><a href="{% url 'legal' %}#terms_of_use" class="text-dark">Terms of Use</a></div>
+			<div class="d-inline"><a href="https://github.com/Ashtroid/ashwingg" target="_blank" class="text-dark">GitHub</a></div>
 			<div class="font-weight-light text-muted">
 				Ashwin.gg isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
 			</div>

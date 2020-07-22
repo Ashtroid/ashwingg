@@ -1,7 +1,7 @@
 <div class="d-flex w-match justify-content-center align-items-center bg-dark p-1">
 	<a class="d-inline text-light liveGameDuration" href="{% url 'live_game' %}">Loading...</a>
 </div>
-<div class="d-flex w-match justify-content-center align-items-center bg-live border">
+<div class="d-flex w-match justify-content-center align-items-center bg-live border h-extended">
 	{% for team in match.participantData %}
 	<div class="w-50">
 		<div class="d-block h-game">

@@ -1,7 +1,7 @@
 <div class="row vw-100 bg-dark border p-1">
 	<a class="col d-flex justify-content-center text-light liveGameDuration" href="{% url 'live_game' %}">Loading...</a>
 </div>
-<div class="row vw-100 h-liveParticipant bg-live border my-1">
+<div class="row vw-100 h-match bg-red bg-live border my-1">
 	{% for team in match.participantData %}
 	<div class="col-6 h-100 d-block">
 		{% for participant in team %}
