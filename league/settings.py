@@ -41,8 +41,9 @@ env = environ.Env(
 SECRET_KEY = env('SECRET_KEY')
 API_KEY = env('API_KEY')
 DEBUG = env('DEBUG')
+temp_DEBUG = False
 
-if not DEBUG:
+if not temp_DEBUG:
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY') 
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')

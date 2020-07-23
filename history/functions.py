@@ -76,12 +76,18 @@ def getRunes(stats):
 	subRune = map.get(str(stats['perkSubStyle']))
 	return {'all': runes, 'subRune': subRune}
 
+#broken for now
 def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed):
 	participantData = []
-	blueRoles = get_roles(champion_roles, unsortedChampListBlue)
-	redRoles = get_roles(champion_roles, unsortedChampListRed)
-	teams = [blueRoles, redRoles]
 	roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
+	#blueRoles = get_roles(champion_roles, unsortedChampListBlue)
+	#redRoles = get_roles(champion_roles, unsortedChampListRed)
+	blueRoles = {}
+	redRoles = {}
+	for i in range(5):
+		blueRoles[roles[i]] = unsortedChampListBlue[i];
+		redRoles[roles[i]] = unsortedChampListRed[i];
+	teams = [blueRoles, redRoles]
 	for team in teams:
 		participantDataList = []
 		for role in roles:
@@ -89,7 +95,6 @@ def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue
 			participantDataList.append(participantDataMap[team[role]])
 		participantData.append(participantDataList)
 	return participantData
-	
 
 def getCurrentMatchResult(summonerId, region):
 	response = getSummonersInActiveGame(summonerId, region)
@@ -272,8 +277,8 @@ class Container():
 		matches = requestMatchesById(accountId, region, startGame)
 		if 'status' in matches:
 			return {'status_code': matches['status']['status_code']}
-		#matchResults = getMatchResults(matches["matches"], accountId, region)
-		matchResults = getThreadedMatchResults(matches["matches"], accountId, region)
+		matchResults = getMatchResults(matches["matches"], accountId, region)
+		#matchResults = getThreadedMatchResults(matches["matches"], accountId, region)
 		return {"matchResults": matchResults, "numGames": len(matchResults), "status_code": '200'}
 
 	def isInGame(summonerId, region):
