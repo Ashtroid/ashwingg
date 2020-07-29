@@ -80,13 +80,9 @@ def getRunes(stats):
 def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed):
 	participantData = []
 	roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
-	#blueRoles = get_roles(champion_roles, unsortedChampListBlue)
-	#redRoles = get_roles(champion_roles, unsortedChampListRed)
-	blueRoles = {}
-	redRoles = {}
-	for i in range(5):
-		blueRoles[roles[i]] = unsortedChampListBlue[i];
-		redRoles[roles[i]] = unsortedChampListRed[i];
+	champion_roles[876] = {'JUNGLE': 1.0, 'TOP': 0.0, 'MIDDLE': 0.0, 'BOTTOM': 0.0, 'UTILITY': 0.0}
+	blueRoles = get_roles(champion_roles, unsortedChampListBlue)
+	redRoles = get_roles(champion_roles, unsortedChampListRed)
 	teams = [blueRoles, redRoles]
 	for team in teams:
 		participantDataList = []
@@ -110,8 +106,9 @@ def getCurrentMatchResultBoolean(summonerId, region):
 	return response.status_code == 200 and "gameQueueConfigId" in match and match["gameQueueConfigId"] == 420
 
 def getLiveMatchData(match, summonerId, region):
-	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
+	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/champions.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
+	summoner = requests.get("%s/%s/data/en_US/summoner.json"%(lol_version, lol_patch)).json()["data"]
 	map = json.load(open(os.path.join(BASE_DIR, "history/static/runes.json")))
 	matchInfo = dict()
 	gameStartTime = match["gameStartTime"]
@@ -132,6 +129,10 @@ def getLiveMatchData(match, summonerId, region):
 		data["champion"] = champion
 		data["spell1Id"] = summonerSpell[str(participant["spell1Id"])]
 		data["spell2Id"] = summonerSpell[str(participant["spell2Id"])]
+		data["spell1Name"] = summoner[data["spell1Id"]]["name"]
+		data["spell1Tooltip"] = summoner[data["spell1Id"]]["description"]
+		data["spell2Name"] = summoner[data["spell2Id"]]["name"]
+		data["spell2Tooltip"] = summoner[data["spell2Id"]]["description"]
 		runes = []
 		perks = participant["perks"]["perkIds"]
 		for rune in perks:
@@ -147,7 +148,7 @@ def getLiveMatchData(match, summonerId, region):
 	matchInfo["participantData"] = getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed)
 	return matchInfo
 
-def processMatch(region, championDict, summonerSpell, champToChampName, champion_roles, database, match):
+def processMatch(region, championDict, summonerSpell, summoner, itemJson, champion_roles, database, match):
 	gameId = match["gameId"]
 	if gameId in database:
 		return database[gameId]
@@ -168,7 +169,11 @@ def processMatch(region, championDict, summonerSpell, champToChampName, champion
 			participantId = participant["participantId"]
 			participantInfo = matchData["participants"][participantId-1]
 			info["spell1Id"] = summonerSpell[str(participantInfo["spell1Id"])]
+			info["spell1Name"] = summoner[info["spell1Id"]]["name"]
+			info["spell1Tooltip"] = summoner[info["spell1Id"]]["description"]
 			info["spell2Id"] = summonerSpell[str(participantInfo["spell2Id"])]
+			info["spell2Name"] = summoner[info["spell2Id"]]["name"]
+			info["spell2Tooltip"] = summoner[info["spell2Id"]]["description"]
 			stats = participantInfo["stats"]
 			info["runes"] = getRunes(stats)
 			if matchData["gameDuration"] < 300:
@@ -181,14 +186,27 @@ def processMatch(region, championDict, summonerSpell, champToChampName, champion
 			info["KDA"] = str(stats["kills"]) + " / " + str(stats["deaths"]) + " / " + str(stats["assists"])
 			itemList = []
 			for i in range(0, 6):
-				itemList.append(stats["item" + str(i)])
-			info["trinket"] = stats["item6"]
+				itemIntKey = stats["item" + str(i)]
+				if itemIntKey == 0:
+					itemList.append(0)
+				else:
+					itemKey = str(itemIntKey)
+					itemDict = dict()
+					itemDict["image"] = itemKey + ".png"
+					itemDict["name"] = itemJson[itemKey]["name"]
+					itemDict["gold"] = itemJson[itemKey]["gold"]
+					itemDict["description"] = itemJson[itemKey]["description"]
+					itemList.append(itemDict)
 			info["items"] = itemList
+			trinket = str(stats["item6"])
+			info["trinket"] = trinket
+			if trinket != 0:
+				info["trinketName"] = itemJson[trinket]["name"]
+				info["trinketDescription"] = itemJson[trinket]["description"]
 			championId = matchData["participants"][participantId-1]["championId"]
 			champion = championDict[str(championId)]
 			data["champion"] = champion
 			info["champion"] = champion
-			info["championName"] = champToChampName[champion]["name"]
 			accountIdToInfo[participant["player"]["accountId"]] = info
 			data["accountId"] = participant["player"]["accountId"]
 			participantDataMap[championId] = data
@@ -201,9 +219,10 @@ def processMatch(region, championDict, summonerSpell, champToChampName, champion
 	return matchInfo
 
 def getMatchResults(matches, accountId, region):
-	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/championKey.json")))
+	championDict = json.load(open(os.path.join(BASE_DIR, "history/static/champions.json")))
 	summonerSpell = json.load(open(os.path.join(BASE_DIR, "history/static/summonerSpell.json")))
-	champToChampName = requests.get("%s/%s/data/en_US/champion.json"%(lol_version, lol_patch)).json()["data"]
+	summoner = requests.get("%s/%s/data/en_US/summoner.json"%(lol_version, lol_patch)).json()["data"]
+	itemJson = requests.get("%s/%s/data/en_US/item.json"%(lol_version, lol_patch)).json()["data"]
 	champion_roles = pull_data()
 	database = dict()
 	for match in matches:
@@ -216,7 +235,7 @@ def getMatchResults(matches, accountId, region):
 			database[gameId] = matchInfo
 	matchList = []
 	for match in matches:
-		matchResult = processMatch(region, championDict, summonerSpell, champToChampName, champion_roles, database, match)
+		matchResult = processMatch(region, championDict, summonerSpell, summoner, itemJson, champion_roles, database, match)
 		matchList.append(matchResult)
 	for match in matchList:
 		gameId = match["gameId"]
@@ -283,6 +302,28 @@ class Container():
 
 	def isInGame(summonerId, region):
 		return getCurrentMatchResultBoolean(summonerId, region)
+
+	def getUserInfo(summonerName, region):
+		print(summonerName)
+		QUEUE_TYPE = "RANKED_SOLO_5x5"
+		summonerIdResponse = requestSummonerId(summonerName, region)
+		if summonerIdResponse.status_code == 404 or summonerIdResponse.status_code == 404:
+			return {'was_found': False}
+		summonerId = summonerIdResponse.json()
+		data = dict()
+		id = summonerId["id"]
+		accountStats = getAccountStats(id, region)
+		if accountStats == 404:
+			data['rank'] = "Unranked"
+		else:
+			tier = accountStats["tier"].lower().capitalize()
+			data['rank'] =  tier + " " + accountStats["rank"]
+			data["LP"] = str(accountStats["leaguePoints"]) + " LP"
+			data["winloss"] = str(accountStats["wins"]) + "W " + str(accountStats["losses"]) + "L"
+			data["winPercent"] = str(accountStats["wins"] * 100 // (accountStats["wins"] + accountStats["losses"])) + "%"
+		data["summonerName"] = summonerId["name"]
+		data["summonerId"] = id
+		return {'was_found': True, 'data': data}
 
 	def getPageInfo(summonerName, region):
 		QUEUE_TYPE = "RANKED_SOLO_5x5"

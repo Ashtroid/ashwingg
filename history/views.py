@@ -9,21 +9,26 @@ from league.settings import lol_patch, lol_version
 
 @ratelimit(key='ip', rate='10/m', block=True)
 def home(request):
-	searches = request.session.get('searches', [])
-	region = request.session.get('region', 'NA1')
-	regions = Container.getRegionList()
+	context = getBaseContext(request)
 	if request.method == 'GET' and 'username' in request.GET:
 		username = request.GET['username']
 		if username:
-			response = Container.getPageInfo(username, region)
+			response = Container.getPageInfo(username, context['region'])
 			if response == config.NO_RANK_FOUND or response == config.NO_SUMMONER_FOUND or response == config.REQUEST_500:
-				return render(request, 'history/invalid.html', context = {'username': username, 'region': region, 'regions': regions, 'response': response})
+				context['response'] = response
+				context['username'] = request.GET['username']
+				return render(request, 'history/invalid.html', context = context)
 			else:
 				summonerName = response['summonerName']
-				searches = LRU().add(summonerName, searches)
+				searches = LRU().add(summonerName, context['searches'])
 				request.session['searches'] = searches
-				return render(request, 'history/index.html', context = {'dict': response, 'region': region, 'regions': regions, 'is_mobile': request.user_agent.is_mobile,'searches': searches, 'cdn': lol_version, 'patch': lol_patch})
-	return render(request, 'history/homepage.html', context = {'searches': searches, 'region': region, 'regions': regions})
+				context['searches'] = searches
+				context['dict'] = response
+				context['is_mobile'] = request.user_agent.is_mobile
+				context['cdn'] = lol_version
+				context['patch'] = lol_patch
+				return render(request, 'history/index.html', context = context)
+	return render(request, 'history/homepage.html', context = context)
 
 @ratelimit(key='ip', rate='30/m', block=True)
 @ratelimit(key='post:username', rate='2/s', block=True)
@@ -77,18 +82,31 @@ def riot(request):
 	return render(request, 'history/riot.txt')
 	
 def FAQ(request):
-	region = request.session.get('region', 'NA1')
-	regions = Container.getRegionList()
-	return render(request, 'history/FAQ.html', context={'region': region, 'regions': regions})
+	return render(request, 'history/FAQ.html', context = getBaseContext(request))
 
 def legal(request):
-	region = request.session.get('region', 'NA1')
-	regions = Container.getRegionList()
-	return render(request, 'history/legal.html', context={'region': region, 'regions': regions})
+	return render(request, 'history/legal.html', context = getBaseContext(request))
 
 def live_game(request):
+	return render(request, 'history/live_game.html', context = getBaseContext(request))
+
+def lobby(request):
+	context = getBaseContext(request)
+	if request.method == 'GET' and 'usernames' in request.GET:
+		lobby = request.GET.get('usernames')
+		usernames = lobby.split(",")
+		lobbyInfoList = []
+		for summonerName in usernames:
+			userInfo = Container.getUserInfo(summonerName, context['region'])
+			if userInfo['was_found']:
+				lobbyInfoList.append(userInfo['data'])
+		context['lobbyInfo'] = lobbyInfoList
+	return render(request, 'history/lobby.html', context = context)
+
+def getBaseContext(request):
+	searches = request.session.get('searches', [])
 	region = request.session.get('region', 'NA1')
 	regions = Container.getRegionList()
-	return render(request, 'history/live_game.html', context={'region': region, 'regions': regions})
+	return {'searches': searches, 'region': region, 'regions': regions}
 
 

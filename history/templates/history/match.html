@@ -1,4 +1,5 @@
 {% for match in matchData %}
+<stats>
 <div class="h-match d-flex justify-content-center align-items-center">
 	<div class="match-dimensions bg-{{match.info.matchStatus}} border rounded">
 		<div class = "w-time h-100 d-flex justify-content-center align-items-center text-center float-left">
@@ -19,33 +20,38 @@
 		</div>
 		<div class="w-champion h-100 d-flex justify-content-center align-items-center text-center float-left">
 			<div class="d-block">
-				<img src="{{cdn}}/{{patch}}/img/champion/{{match.info.champion}}.png" height=80px width=80px class="rounded-circle unselectable p-1"/>
+				<img src="{{cdn}}/{{patch}}/img/champion/{{match.info.champion.champion}}.png" height=80px width=80px class="rounded-circle unselectable p-1"/>
 				<div class="small">
-					{{match.info.championName}}
+					{{match.info.champion.name}}
 				</div>
 			</div>
 		</div>
 		<div class="w-ss h-100 d-flex justify-content-center align-items-center float-left">
 			<div class="d-block">
-				<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell1Id}}.png" height=34px width=34px class="p-2px"/>
-				<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell2Id}}.png" height=34px width=34px class="p-2px"/>
+				<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell1Id}}.png" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{match.info.spell1Name}}</div>{{match.info.spell1Tooltip}}'/>
+				<img src = "{{cdn}}/{{patch}}/img/spell/{{match.info.spell2Id}}.png" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{match.info.spell2Name}}</div>{{match.info.spell2Tooltip}}'/>
 			</div>
 		</div>
 		<div class="w-runes h-100 d-flex justify-content-center align-items-center float-left">
 			<div class="d-block">
-				<img src = "{{cdn}}/img/{{match.info.runes.all.0}}" height=34px width=34px/>
-				<img src = "{{cdn}}/img/{{match.info.runes.subRune}}" height=34x width=34px class="p-6px"/>
+				<div data-toggle="tooltip" title='<div class="title">{{match.info.runes.all.0.name}}</div>{{match.info.runes.all.0.tooltip}}'>
+					<img src = "{{cdn}}/img/{{match.info.runes.all.0.image}}" height=34px width=34px/>
+				</div>
+				<div data-toggle="tooltip" title="{{match.info.runes.subRune.name}}">
+					<img src = "{{cdn}}/img/{{match.info.runes.subRune.image}}" height=34px width=34px class="p-6px"/>
+				</div>
 			</div>
 		</div>
 		<div class="w-KDA h-100 d-flex justify-content-center align-items-center font-weight-bold float-left">
-			{{match.info.KDA}}
+			<div data-toggle="tooltip" title="KDA">{{match.info.KDA}}</div>
 		</div>
 		<div class="w-items h-100 d-flex justify-content-center align-items-center float-left">
 			<div class="d-inline-block w-item-box">
 			{% for item in match.info.items %}
 				<div class="item-container-dimensions d-flex justify-content-center align-items-center float-left">
 				{% if item != 0 %}
-					<img src="{{cdn}}/{{patch}}/img/item/{{item}}.png" class="item-dimensions rounded">
+					<img src="{{cdn}}/{{patch}}/img/item/{{item.image}}" class="item-dimensions rounded" data-toggle="tooltip" 
+					title='<div class="title">{{item.name}}</div>{{item.description}}<div class="gold">{{item.gold.total}} gold</div>'/>
 				{% else %}
 					<div class="bg-dark item-dimensions rounded opacity-light"></div>
 				{% endif %}
@@ -54,7 +60,8 @@
 			</div>
 			<div class="item-container-dimensions d-flex justify-content-center align-items-center float-left">
 				{% if match.info.trinket != 0 %}
-					<img src="{{cdn}}/{{patch}}/img/item/{{match.info.trinket}}.png" class="item-dimensions rounded">
+					<img src="{{cdn}}/{{patch}}/img/item/{{match.info.trinket}}.png" data-toggle="tooltip" class="item-dimensions rounded" title='<div class="title">{{match.info.trinketName}}</div>
+					{{match.info.trinketDescription}}'>
 				{% else %}
 					<div class="bg-dark item-dimensions rounded opacity-light"></div>
 				{% endif %}
@@ -65,7 +72,7 @@
 			<div class="d-block">
 				{% for participant in team %}
 				<div class="w-100 h-20 d-flex justify-content-center align-items-center float-left">
-					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png" class="float-left" height=20px width=20px/>
+					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion.champion}}.png" class="float-left" height=20px width=20px data-toggle="tooltip" title="{{participant.champion.name}}"/>
 					<div class="w-playerInfoText">
 						<form action="{% url 'home' %}" method="get">
 							<input type="submit" class="btn btn-link text-dark font-size-13px w-100 d-block text-truncate text-left float-left p-1" value="{{participant.summonerName}}" name="username">
@@ -93,7 +100,7 @@
 				data: {
 					'gameId': '{{match.gameId}}',
 					'csrfmiddlewaretoken': $("[name=csrfmiddlewaretoken]").val()
-		    	},
+				},
 				success: function(response) {
 					$("#content_{{match.gameId}}").html(response.extended_html);
 				},
@@ -104,4 +111,11 @@
 		$("#a_{{match.gameId}}").toggleClass('flip');
 	});
 </script>
+</stats>
 {% endfor %}
+<script type="text/javascript">
+	$("[data-toggle=tooltip]").tooltip({
+		html: true,
+		sanitize: false
+	});
+</script>

@@ -237,3 +237,54 @@ html {
 	color: #595959 !important;
 	font-size: 14px !important;
 }
+
+.FAQ h5 {
+	text-align: center;
+}
+
+.FAQ .card h6 {
+	padding: 2px;
+	color: #FF5252;
+}
+
+.FAQ h1 {
+	letter-spacing: 1px;
+	font-weight: 200;
+}
+
+.FAQ .card p {
+	text-align: center;
+}
+
+.FAQ p {
+	color: #323;
+}
+
+.FAQ a {
+	font-weight: 400;
+	color: blue;
+}
+
+.tooltip-inner {
+	padding: 8px;
+	color: #d7e5ff;
+	font-size: 12px;
+	text-align: left;
+}
+
+.tooltip .title {
+	font-size: 15px;
+	color: #00EFFE;
+	text-align: center;
+	padding-bottom: 3px;
+}
+
+.tooltip .gold {
+	color: #FCCF00;
+	font-weight: 600;
+	text-align: right;
+}
+
+.lobby .card {
+	min-height: 225px;
+}

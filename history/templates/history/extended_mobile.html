@@ -3,7 +3,7 @@
 	<div class="col-6 h-100 d-block">
 		{% for participant in team %}
 		<div class="w-100 h-20 d-flex align-items-center">
-			<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png" height=24px width=24px/>
+			<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion.champion}}.png" height=24px width=24px/>
 			<div class="w-playerInfoText mx-1">
 				<form action="{% url 'home' %}" method="get" class="w-playerInfoText">
 					<input type="submit" class="btn btn-link text-dark font-size-13px w-100 d-block text-truncate text-left float-left p-1" value="{{participant.summonerName}}" name="username">

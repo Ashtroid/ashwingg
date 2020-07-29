@@ -8,7 +8,7 @@
 			{% for participant in team %}
 			<div class="w-100 h-20 d-flex justify-content-center align-items-center">
 				<div class="d-inline float-left">
-					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png" height=24px width=24px/>
+					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion.champion}}.png" height=24px width=24px data-toggle="tooltip" title="{{participant.champion.name}}"/>
 				</div>
 				<div class="w-playerInfoText">
 					<form action="{% url 'home' %}" method="get">
@@ -16,8 +16,8 @@
 					</form>
 				</div>
 				<div>
-					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell1Id}}.png" height=20px width=20px/>
-					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell2Id}}.png" height=20px width=20px/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell1Id}}.png" height=20px width=20px data-toggle="tooltip" title='<div class="title">{{participant.spell1Name}}</div>{{participant.spell1Tooltip}}'/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell2Id}}.png" height=20px width=20px  data-toggle="tooltip" title='<div class="title">{{participant.spell2Name}}</div>{{participant.spell2Tooltip}}'/>
 				</div>
 				<div class="mx-4">
 					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.summonerId}}_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
@@ -37,7 +37,7 @@
 									<div class="row">
 										<div class="col d-flex justify-content-center align-items-center">
 										{% for rune in participant.runes %}
-											<img src="{{cdn}}/img/{{rune}}" height=34px width=34px class="p-2px"/>
+											<img src="{{cdn}}/img/{{rune.image}}" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{rune.name}}</div>{{rune.tooltip}}'/>
 										{% endfor %}
 										</div>
 									</div>
@@ -52,3 +52,9 @@
 	</div>
 	{% endfor %}
 </div>
+<script type="text/javascript">
+	$("[data-toggle=tooltip]").tooltip({
+		html: true,
+		sanitize: false
+	});
+</script>

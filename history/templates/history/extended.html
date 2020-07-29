@@ -5,7 +5,7 @@
 		<div class="d-block">
 			<div class="d-flex w-100 h-20 justify-content-center align-items-center small">
 				<div>
-					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion}}.png" height=24px width=24px/>
+					<img src="{{cdn}}/{{patch}}/img/champion/{{participant.champion.champion}}.png" height=24px width=24px data-toggle="tooltip" title="{{participant.champion.name}}"/>
 				</div>
 				<div class="w-playerInfoText">
 					<form action="{% url 'home' %}" method="get">
@@ -13,8 +13,8 @@
 					</form>
 				</div>
 				<div>
-					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell1Id}}.png" height=20px width=20px/>
-					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell2Id}}.png" height=20px width=20px/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell1Id}}.png" height=20px width=20px data-toggle="tooltip" title='<div class="title">{{participant.accountInfo.spell1Name}}</div>{{participant.accountInfo.spell1Tooltip}}'/>
+					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell2Id}}.png" height=20px width=20px  data-toggle="tooltip" title='<div class="title">{{participant.accountInfo.spell2Name}}</div>{{participant.accountInfo.spell2Tooltip}}'/>
 				</div>
 				<div class="mx-3">
 					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.accountId}}_runes_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
@@ -34,7 +34,7 @@
 									<div class="row">
 										<div class="col d-flex justify-content-center align-items-center">
 										{% for rune in participant.accountInfo.runes.all %}
-											<img src="{{cdn}}/img/{{rune}}" height=34px width=34px class="p-2px"/>
+											<img src="{{cdn}}/img/{{rune.image}}" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{rune.name}}</div>{{rune.tooltip}}'/>
 										{% endfor %}
 										</div>
 									</div>
@@ -62,8 +62,8 @@
 									<div class="row">
 										<div class="col d-flex justify-content-center align-items-center">
 										{% for item in participant.accountInfo.items %}
-											{% if item != 0%}
-											<img src="{{cdn}}/{{patch}}/img/item/{{item}}.png" height=34px width=34px class="p-2px">
+											{% if item != 0 %}
+											<img src="{{cdn}}/{{patch}}/img/item/{{item.image}}" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{item.name}}</div>{{item.description}}<div class="gold">{{item.gold.total}} gold</div>'/>
 											{% endif %}
 										{% endfor %}
 										</div>
@@ -79,3 +79,9 @@
 	</div>
 	{% endfor %}
 </div>
+<script type="text/javascript">
+	$("[data-toggle=tooltip]").tooltip({
+		html: true,
+		sanitize: false
+	});
+</script>

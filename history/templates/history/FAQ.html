@@ -1,30 +1,108 @@
 {% extends 'history/base_template.html' %}
 {% load static %}
 {% block content %}
-<div class="bg-dark-blue text-light text-center">
-	<div class="container">
-		<div class="row">
-			<h1 class="col p-3"> 
-				Frequently Asked Questions
-			</h1>
+<div class="FAQ">
+	<div class="bg-dark-blue text-light text-center">
+		<div class="container">
+			<div class="row p-1">
+				<h1 class="col"> 
+					Frequently Asked Questions
+				</h1>
+			</div>
 		</div>
-	<!--<img src="{% static 'koala.png' %}" height=200px width=200px/>-->
 	</div>
-</div>
-<div class="font-weight-light text-dark">
-	<div class="container">
-		<div class="row">
-			<div class="col p-3">
-				<h5 class="text-dark">Our Mission</h5>
-				<p>
-					Ashwin.gg is a League of Legends Match History Visualizer, using the <a href="https://developer.riotgames.com/apis" target="_blank">API</a> provided by Riot Games to neatly display all <b>Ranked Solo/Duo Queue</b> games by username. We provide a minimal approach to displaying all the information needed to judge a game without all the clutter. All the code for this project can be found <a href="https://github.com/ashtroid/ashwingg" target="_blank">here</a>.
-				</p>
-				<h5 class="text-dark">Technical Details</h5>
-				<p>
-					Our website is powered by Django, which allows us to use Python as the backend. Python calls the Riot API and parses summoner info. The view renders the template, built on basic HTML, CSS, Javascript combo - with the help of Bootstrap and JQuery - with summoner info based on their Ranked Solo/Duo Queue games. Jquery handles AJAX requests, which uses a POST function to call the Python backend using a View class, and returns a rendered String that is used to display the matches, batched at a capacity of 5 at a time. This uses multiprocessing, with a pool size 5 to match the batch size. Matches are indexed by matchId, which are then stored in the SQLite database, and upon compute, check against the database to avoid recomputation for much faster load times and reduced server load. The server itself is run on an Ubuntu EC2 instance, which uses Nginx is the Load Balancer and reverse proxy, and Route 53 as the DNS provider. The job handling is done by Supervisor running 3 Gunicorn workers, which is the cap of the EC2 instance. The website is configured to only run through SSL, powered by a LetsEncrypt cert/key pair. We also use standard Django headers to provide rate limiting to avoid throttling and csrf protection for security, with Memcached used as in-memory caching to store the rate limiter keys. Static files are served via CDN, built on CloudFront and S3.
-				</p>
+	<div class="font-weight-light text-dark">
+		<div class="container">
+			<div class="row p-3">
+				<div class="col-md card p-3 m-2">
+					<h5 class="text-dark card-title" id="introduction">Introduction</h5>
+					<p>
+						Hi, my name is Ashwin Sethi, and I am a software engineer. I built this website as a tool for people to aesthetically view peoples' League of Legends Ranked 5x5 Solo/Duo Queue match histories without the hassle of ads and messy statistics. Whether it be from your phone, or from your computer, I want you to be able to look at the screen and not have to search or squint for the information you came to see. This project is free, completely out-of-pocket, and open-source.
+					</p>
+				</div>
+				<div class="col-md card p-3 m-2">
+					<h5 class="text-dark card-title" id="mission">Our Mission</h5>
+					<p>
+						Ashwin.gg is a League of Legends Match History Visualizer, using the <a href="https://developer.riotgames.com/apis" target="_blank">API</a> provided by Riot Games to neatly display all <b>Ranked Solo/Duo Queue</b> games by username. We provide a minimal approach to displaying all the information needed to judge a game without all the clutter. All the code for this project can be found <a href="https://github.com/ashtroid/ashwingg" target="_blank">here</a>.
+					</p>
+				</div>
+			</div>
+			<h5 class="text-dark">Technical Details</h5>
+			<div class="row p-3">
+				<div class="col-md-4 framework">
+					<h6 class="text-center p-2 my-1">
+						Tech Stack
+					</h6>
+					<div class="card p-2 my-1">
+						<h6>Framework</h6><p>Django</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Backend</h6><p>Python3</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Frontend</h6><p>HTML5, CSS3, JavaScript, Bootstrap4, jQuery</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Database</h6><p>SQLite3</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Cache</h6><p>Memcached</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Server</h6><p>Ubuntu AWS EC2</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Load Balancer & Reverse Proxy</h6><p>Nginx</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>DNS</h6><p>AWS Route 53</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Server Process Manager</h6><p>Gunicorn, Supervisor</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>Encryption</h6><p>LetsEncrypt</p>
+					</div>
+					<div class="card p-2 my-1">
+						<h6>CDN</h6><p>AWS CloudFront, S3</p>
+					</div>
+				</div>
+				<div class="col-md-8 p-2 my-1">
+					<h6 class="text-center">Implemntation</h6>
+					<p class="text-center">
+						Python calls the Riot API and parses summoner info. The view renders the template with summoner info based on their Ranked Solo/Duo Queue games. AJAX POST calls backend using a View class, returning a rendered String which displays the matches, using standard Python Multiprocessing. Matches are indexed by matchId, which are then stored in the database, and upon compute, check against the database to avoid re-computation for much faster load times and reduced server load. The website is configured to only run through SSL, powered by a LetsEncrypt cert/key pair and enforced by Route 53 and Nginx config. Standard Django headers provide rate limiting to avoid throttling and CSRF protection for security, with in-memory caching to store the rate limiter keys. Static and Media files are served via CDN.
+					</p>
+				</div>
+			</div>
+			<h5 class="text-dark">Business Details</h5>
+			<div class="row p-3">
+				<div class="col-md">
+					<div class="card p-2 my-1">
+						<h6>Brand Manager & Creative Director</h6><p>Emily Ke</p>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="card p-2 my-1">
+						<h6>Logo Designer</h6><p><a href="https://www.fiverr.com/sarahchey" target="_blank">Sarah Chey</a></p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+	$("#introduction").hide().delay(300).slideDown(300);
+	$("#mission").hide().delay(600).slideDown(300);
+	$(".framework .card h6").hide();
+	$(".framework .card").hover(
+		function() {
+			$(".framework .card h6").slideUp();
+			$(this).find("h6").slideDown();
+		},
+		function() {
+		}
+	);
+</script>
 {% endblock %}

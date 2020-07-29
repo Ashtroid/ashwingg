@@ -1,0 +1,92 @@
+{% extends 'history/base_template.html' %}
+{% load static %}
+{% block content %}
+<div class="d-flex align-items-center bg-dark-blue h-100">
+<div class="container-fluid">
+	<div class="row p-3 lobby">
+		<div class="col">
+			<div class="card">
+				<div class="card-body">
+					 <h5 class="card-title">Summoner 1, Summoner 2, ...</h5>
+					 <p class="card-text">
+						Search for multiple summoners separated by comma or a single summoner to go to their account page
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card">
+				<div class="card-body">
+					 <h5 class="card-title">Copy & Paste</h5>
+					 <p class="card-text">
+						<div class="text-primary">Summoner 1 joined the lobby</div>
+						<div class="text-success">Summoner 2 joined the lobby</div>
+						<div class="text-danger d-none d-sm-block">Summoner 3 joined the lobby</div>
+						<div class="text-warning d-none d-md-block">Summoner 4 joined the lobby</div>
+						<div class="text-info d-none d-md-block">Summoner 5 joined the lobby</div>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card">
+				<div class="card-body">
+					 <h5 class="card-title">Live Game</h5>
+					 <p class="card-text">
+						Your live game will automatically appear when it starts!
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row p-3">
+		<div class="col">
+			<form method="get" class="d-flex justify-content-center w-100">
+				<input name="usernames" class="form-control-lg searchArea bg-light text-dark border-0 rounded-0 w-75" placeholder="Paste your lobby chat" aria-label="Search" autocomplete="off" spellcheck="false" autofocus="" />
+				<input type="submit" value="Search" class="btn btn-lg btn-light mx-2 rounded-0" />
+			</form>
+		</div>
+	</div>
+	<div class="row p-3">
+		{% for summoner in lobbyInfo %}
+		<div class="col" style="max-width: 20%">	
+			<div class="card">
+				<div class="card-body text-center">
+				 	<h5 class="card-title">{{summoner.summonerName}}</h5>
+					<p class="card-text">
+						<div class="d-inline p-0 text-dark-blue font-weight-bold">{{summoner.rank}}</div>
+						{% if summoner.rank != 'Unranked' %}
+						<div class="d-inline p-0">{{summoner.LP}}</div>
+						<div class="p-0">{{summoner.winloss}}</div>
+						<div class="d-inline p-0 text-dark-blue font-weight-bold">{{summoner.winPercent}}</div>
+						<div class="d-inline p-0">Win Ratio</div>
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+	$('.searchArea').on('paste', function(e) {
+		e.preventDefault();
+		var clipboardData = e.clipboardData || window['clipboardData'] || e.originalEvent.clipboardData;
+		var pastedData = clipboardData.getData('Text');
+		const regex = /(.+?) joined the lobby|(.+?) left the lobby/g;
+		var toPaste = [...pastedData.matchAll(regex)];
+		var set = new Set();
+		toPaste.forEach(function(item) {
+			if(item[1] && item[1] != "...") {
+				set.add(item[1].trim());
+			} else if(item[2] && item[2] != "...") {
+				set.add(item[2].trim());
+			}
+		});
+		$('.searchArea').val(Array.from(set).join(", "));
+	});
+</script>
+{% endblock %}

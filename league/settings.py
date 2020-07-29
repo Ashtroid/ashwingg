@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
-lol_patch = "10.14.1"
+lol_patch = "10.15.1"
 CDN_URL = "https://ashwingg-static.s3.amazonaws.com/dragontail-"
 #CDN_URL = "/dragontail-"
 lol_version = CDN_URL + lol_patch
@@ -41,9 +41,8 @@ env = environ.Env(
 SECRET_KEY = env('SECRET_KEY')
 API_KEY = env('API_KEY')
 DEBUG = env('DEBUG')
-temp_DEBUG = False
 
-if not temp_DEBUG:
+if not DEBUG:
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY') 
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')

@@ -7,6 +7,7 @@ urlpatterns = [
     path('FAQ', views.FAQ, name="FAQ"),
     path('legal', views.legal, name="legal"),
     path('live_game', views.live_game, name="live_game"),
+    path('lobby', views.lobby, name="lobby"),
     path('/riot.txt', views.riot, name="riot"),
 
     #Posts
