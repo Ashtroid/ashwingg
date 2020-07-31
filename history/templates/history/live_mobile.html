@@ -1,5 +1,8 @@
 <div class="row vw-100 bg-dark border p-1">
-	<a class="col d-flex justify-content-center text-light liveGameDuration" href="{% url 'live_game' %}">Loading...</a>
+	<form method="get" action='live_game' class="m-0 w-100 text-center">
+		<input type="hidden" name="username" value="{{summoner}}">
+		<input type="submit" class="btn btn-link text-light p-0 liveGameDuration" value="Loading...">
+	</form>
 </div>
 <div class="row vw-100 h-match bg-red bg-live border my-1">
 	{% for team in match.participantData %}

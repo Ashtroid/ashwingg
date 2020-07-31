@@ -53,9 +53,9 @@
 					<div class="matchContainer my-2 container-fluid">
 						{% if dict.isInGame %}
 							{% if is_mobile %}
-								{% include "history/live_mobile.html" with match=dict.matchData %}
+								{% include "history/live_mobile.html" with match=dict.matchData summoner=dict.summonerName %}
 							{% else %}
-								{% include "history/live.html" with match=dict.matchData %}
+								{% include "history/live.html" with match=dict.matchData summoner=dict.summonerName %}
 							{% endif %}
 						{% endif %}
 					</div>
@@ -96,7 +96,7 @@
 	var liveGameTime = "{{dict.matchData.gameDelta}}";
 	setInterval(function () {
 		liveGameTime++;
-		$(".liveGameDuration").text("Live Game ("+convertToTime(liveGameTime)+")");
+		$(".liveGameDuration").prop('value', "Live Game ("+convertToTime(liveGameTime)+")");
 	}, 1000);
 	var isInGame = true;
 	{% else %}

@@ -304,26 +304,51 @@ class Container():
 		return getCurrentMatchResultBoolean(summonerId, region)
 
 	def getUserInfo(summonerName, region):
-		print(summonerName)
 		QUEUE_TYPE = "RANKED_SOLO_5x5"
 		summonerIdResponse = requestSummonerId(summonerName, region)
 		if summonerIdResponse.status_code == 404 or summonerIdResponse.status_code == 404:
 			return {'was_found': False}
 		summonerId = summonerIdResponse.json()
 		data = dict()
-		id = summonerId["id"]
-		accountStats = getAccountStats(id, region)
+		identity = summonerId['id']
+		accountStats = getAccountStats(identity, region)
 		if accountStats == 404:
 			data['rank'] = "Unranked"
 		else:
 			tier = accountStats["tier"].lower().capitalize()
 			data['rank'] =  tier + " " + accountStats["rank"]
 			data["LP"] = str(accountStats["leaguePoints"]) + " LP"
-			data["winloss"] = str(accountStats["wins"]) + "W " + str(accountStats["losses"]) + "L"
+			data["rankUrl"] = "https://ashwingg-static.s3.amazonaws.com/ranked-emblems/Emblem_%s.png" % tier
+			data["games"] = str(accountStats["wins"] + accountStats["losses"])
 			data["winPercent"] = str(accountStats["wins"] * 100 // (accountStats["wins"] + accountStats["losses"])) + "%"
 		data["summonerName"] = summonerId["name"]
-		data["summonerId"] = id
+		data["summonerId"] = identity
 		return {'was_found': True, 'data': data}
+
+	def getLiveInfo(summonerName, region):
+		QUEUE_TYPE = "RANKED_SOLO_5x5"
+		summonerIdResponse = requestSummonerId(summonerName, region)
+		if summonerIdResponse.status_code == 404 or summonerIdResponse.status_code == 500:
+			return {'status': 0, 'message': summonerName + ' is not a valid account in ' + region}
+		summonerId = summonerIdResponse.json()
+		id = summonerId["id"]
+		game = getCurrentMatchResult(id, region)
+		if game["status"] == 0:
+			return {'status': 0, 'message': summonerName + " is not currently in an active ranked game"}
+		for team in game['matchData']['participantData']:
+			for summoner in team:
+				identity = summoner['summonerId']
+				accountStats = getAccountStats(identity, region)
+				if accountStats == 404:
+					summoner['rank'] = "Unranked"
+				else:
+					tier = accountStats["tier"].lower().capitalize()
+					summoner['rank'] =  tier + " " + accountStats["rank"]
+					summoner["LP"] = str(accountStats["leaguePoints"]) + " LP"
+					summoner["rankUrl"] = "https://ashwingg-static.s3.amazonaws.com/ranked-emblems/Emblem_%s.png" % tier
+					summoner["games"] = str(accountStats["wins"] + accountStats["losses"])
+					summoner["winPercent"] = str(accountStats["wins"] * 100 // (accountStats["wins"] + accountStats["losses"])) + "%"
+		return {'status': 1, 'data': game["matchData"]}
 
 	def getPageInfo(summonerName, region):
 		QUEUE_TYPE = "RANKED_SOLO_5x5"

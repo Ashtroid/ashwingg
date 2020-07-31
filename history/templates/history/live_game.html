@@ -1,5 +1,144 @@
 {% extends 'history/base_template.html' %}
 {% load static %}
 {% block content %}
-Live Game Page
+<div class="container-fluid bg-light-blue">
+	{% if game %}
+		<div class="row">
+			<div class="col w-100 liveGameDuration d-flex justify-content-center p-1 font-weight-bold text-dark-blue">
+				Loading...
+			</div>
+		</div>
+		{% if is_mobile %}
+		{% for team in game.participantData %}
+			{% for summoner in team %}
+			<div class="row vw-100 my-1 card">
+				<div class="col row">
+					<div class="col p-2 d-flex justify-content-center align-items-center">
+						<img src="{{cdn}}/{{patch}}/img/champion/{{summoner.champion.champion}}.png" height=50px width=50px class="rounded-circle unselectable"/>
+						<div class="d-block">
+							<div class="w-playerInfoText mx-1">
+								<form action="{% url 'home' %}" method="get" class="w-playerInfoText m-0">
+									<input type="submit" class="btn btn-link text-dark font-size-13px w-100 d-block text-truncate text-left float-left p-0" value="{{summoner.summonerName}}" name="username">
+								</form>
+								<div class="small text-secondary">	
+									<img src="{{summoner.rankUrl}}" height=20px width=20px/>
+									{{summoner.rank}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col small d-flex align-items-center justify-content-center">
+						<div class="d-block">
+							<div class="progress bg-danger w-100">
+								<div class="progress-bar bg-success" role="progressbar" style="width: {{summoner.winPercent}};" aria-valuemin="0" aria-valuemax="100">{{summoner.winPercent}}</div>
+							</div>
+							<div class="small p-1 text-secondary">{{summoner.games}} games played</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<div class="row vw-100 my-2"></div>
+		{% endfor %}
+		{% else %}
+		{% for team in game.participantData %}
+		<div class="row">
+			{% for summoner in team %}
+			<div class="col p-2" style="width: 20%;">	
+				<div class="card">
+					<div class="card-body text-center p-1">
+					 	<div class="card-title m-0">
+					 		<form method="get" action="{% url 'home' %}" class="m-0">
+								<input type="submit" class="btn btn-lg btn-link font-weight-bold" name="username" value="{{summoner.summonerName}}">
+							</form>
+					 	</div>
+						<div class="card my-1">
+							<div class="d-flex justify-content-center align-items-center">
+								<div class="d-block">
+									<img src="{{cdn}}/{{patch}}/img/champion/{{summoner.champion.champion}}.png" height=80px width=80px class="rounded-circle unselectable p-1"/>
+									<div class="small">
+										{{summoner.champion.name}}
+									</div>
+								</div>
+								<div class="d-block h-100">
+									<div class="text-dark font-weight-bold">{{summoner.role}}</div>
+									<div class="d-block">
+										<img src = "{{cdn}}/{{patch}}/img/spell/{{summoner.spell1Id}}.png" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{summoner.spell1Name}}</div>{{summoner.spell1Tooltip}}'/>
+										<img src = "{{cdn}}/{{patch}}/img/spell/{{summoner.spell2Id}}.png" height=34px width=34px class="p-2px" data-toggle="tooltip" title='<div class="title">{{summoner.spell2Name}}</div>{{summoner.spell2Tooltip}}'/>
+										<img src = "{{cdn}}/img/{{summoner.runes.0.image}}" height=34px width=34px data-toggle="tooltip" title='<div class="title">{{summoner.runes.0.name}}</div>{{summoner.runes.0.tooltip}}'/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card my-1">
+							<div class="d-inline p-0 text-dark-blue font-weight-bold">{{summoner.rank}}</div>
+							{% if summoner.rank != 'Unranked' %}
+							<div class="d-inline p-0">{{summoner.LP}}</div>
+							<div class="w-100 d-flex align-items-center justify-content-center">
+									<img src="{{summoner.rankUrl}}" height=100px width=100px class="p-2"/>
+								</div>
+							<div class="progress bg-danger">
+								<div class="progress-bar bg-success" role="progressbar" style="width: {{summoner.winPercent}};" aria-valuemin="0" aria-valuemax="100">{{summoner.winPercent}}</div>
+							</div>
+							 <div class="small p-1">{{summoner.games}} games played</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% endfor %}
+		{% endif %}
+	{% elif status == 0 %}
+	<div class="row h-100">
+		<div class="col d-flex align-items-center justify-content-center">
+			<div class="d-block">
+				<h3 class="text-dark-blue">{{message}}</h3>
+				<div class="d-flex justify-content-center align-content-center p-3">
+					<a class="btn btn-dark mx-2" type="button" href="{% url 'live_game' %}">Live</a>
+					<a class="btn btn-dark mx-2" type="button" href="{% url 'home' %}">Home</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% else %}
+	<div class="row h-100">
+		<div class="col d-flex align-items-center justify-content-center">
+			<div class="d-block w-100 text-center h-50">
+				<img src="{% static 'koala.png' %}" height=225px width=225px class="unselectable m-3" />
+				<form method="get" class="d-flex justify-content-center w-100">
+					<input name="username" class="form-control-lg searchArea bg-light text-dark w-75" placeholder="Search an Active Summoner" aria-label="Search" autocomplete="off" spellcheck="false" autofocus="" />
+					<input type="submit" value="Search" class="btn btn-lg bg-dark-blue text-light mx-2 rounded-0" />
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+	$("[data-toggle=tooltip]").tooltip({
+		html: true,
+		sanitize: false
+	});
+	function convertToTime(s) {
+		var h = Math.floor(s/3600); //Get whole hours
+		s -= h*3600;
+		var m = Math.floor(s/60); //Get remaining minutes
+		s -= m*60;
+		if(h < 1) {
+			return m+":"+(s < 10 ? '0'+s : s)
+		}
+		return h+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s);
+	}
+	{% if game %}
+	var liveGameTime = "{{game.gameDelta}}";
+	setInterval(function () {
+		liveGameTime++;
+		$(".liveGameDuration").text(convertToTime(liveGameTime));
+	}, 1000);
+	{% endif %}
+</script>
 {% endblock %}

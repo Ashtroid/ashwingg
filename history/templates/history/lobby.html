@@ -1,8 +1,8 @@
 {% extends 'history/base_template.html' %}
 {% load static %}
 {% block content %}
-<div class="d-flex align-items-center bg-dark-blue h-100">
-<div class="container-fluid">
+<div class="container-fluid bg-dark-blue h-100">
+	{% if not lobbyInfo %}
 	<div class="row p-3 lobby">
 		<div class="col">
 			<div class="card">
@@ -39,6 +39,7 @@
 			</div>
 		</div>
 	</div>
+	{% endif %}
 	<div class="row p-3">
 		<div class="col">
 			<form method="get" class="d-flex justify-content-center w-100">
@@ -47,19 +48,25 @@
 			</form>
 		</div>
 	</div>
-	<div class="row p-3">
+	<div class="row p-3 d-flex justify-content-center">
 		{% for summoner in lobbyInfo %}
-		<div class="col" style="max-width: 20%">	
+		<div class="col" style="width: 20%">	
 			<div class="card">
 				<div class="card-body text-center">
-				 	<h5 class="card-title">{{summoner.summonerName}}</h5>
+				 	<div class="card-title">
+				 		<form method="get" action="{% url 'home' %}">
+							<input type="submit" class="btn btn-lg btn-link font-weight-bold" name="username" value="{{summoner.summonerName}}">
+						</form>
+				 	</div>
 					<p class="card-text">
 						<div class="d-inline p-0 text-dark-blue font-weight-bold">{{summoner.rank}}</div>
 						{% if summoner.rank != 'Unranked' %}
 						<div class="d-inline p-0">{{summoner.LP}}</div>
-						<div class="p-0">{{summoner.winloss}}</div>
-						<div class="d-inline p-0 text-dark-blue font-weight-bold">{{summoner.winPercent}}</div>
-						<div class="d-inline p-0">Win Ratio</div>
+						<img src="{{summoner.rankUrl}}" height=100px width=100px class="p-2"/>
+						<div class="progress bg-danger">
+							<div class="progress-bar bg-success" role="progressbar" style="width: {{summoner.winPercent}};" aria-valuemin="0" aria-valuemax="100">{{summoner.winPercent}}</div>
+						</div>
+						 <div class="small p-1">{{summoner.games}} games played</div>
 						{% endif %}
 					</p>
 				</div>
@@ -67,7 +74,6 @@
 		</div>
 		{% endfor %}
 	</div>
-</div>
 </div>
 {% endblock %}
 {% block scripts %}

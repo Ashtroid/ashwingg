@@ -9,26 +9,27 @@ from league.settings import lol_patch, lol_version
 
 @ratelimit(key='ip', rate='10/m', block=True)
 def home(request):
-	context = getBaseContext(request)
 	if request.method == 'GET' and 'username' in request.GET:
-		username = request.GET['username']
-		if username:
-			response = Container.getPageInfo(username, context['region'])
-			if response == config.NO_RANK_FOUND or response == config.NO_SUMMONER_FOUND or response == config.REQUEST_500:
-				context['response'] = response
-				context['username'] = request.GET['username']
-				return render(request, 'history/invalid.html', context = context)
-			else:
-				summonerName = response['summonerName']
-				searches = LRU().add(summonerName, context['searches'])
-				request.session['searches'] = searches
-				context['searches'] = searches
-				context['dict'] = response
-				context['is_mobile'] = request.user_agent.is_mobile
-				context['cdn'] = lol_version
-				context['patch'] = lol_patch
-				return render(request, 'history/index.html', context = context)
-	return render(request, 'history/homepage.html', context = context)
+		return renderProfile(request, request.GET['username'])
+	return render(request, 'history/homepage.html', context = getBaseContext(request))
+
+def renderProfile(request, username):
+	context = getBaseContext(request)
+	response = Container.getPageInfo(username, context['region'])
+	if response == config.NO_RANK_FOUND or response == config.NO_SUMMONER_FOUND or response == config.REQUEST_500:
+		context['response'] = response
+		context['username'] = username
+		return render(request, 'history/invalid.html', context = context)
+	else:
+		summonerName = response['summonerName']
+		searches = LRU().add(summonerName, context['searches'])
+		request.session['searches'] = searches
+		context['searches'] = searches
+		context['dict'] = response
+		context['is_mobile'] = request.user_agent.is_mobile
+		context['cdn'] = lol_version
+		context['patch'] = lol_patch
+		return render(request, 'history/index.html', context = context)
 
 @ratelimit(key='ip', rate='30/m', block=True)
 @ratelimit(key='post:username', rate='2/s', block=True)
@@ -88,7 +89,18 @@ def legal(request):
 	return render(request, 'history/legal.html', context = getBaseContext(request))
 
 def live_game(request):
-	return render(request, 'history/live_game.html', context = getBaseContext(request))
+	context = getBaseContext(request)
+	if request.method == 'GET' and 'username' in request.GET:
+		game = Container.getLiveInfo(request.GET.get('username'), context['region'])
+		context['status'] = game['status']
+		if game['status'] == 1:
+			context['game'] = game['data']
+			context['is_mobile'] = request.user_agent.is_mobile
+			context['cdn'] = lol_version
+			context['patch'] = lol_patch
+		else:
+			context['message'] = game['message']
+	return render(request, 'history/live_game.html', context = context)
 
 def lobby(request):
 	context = getBaseContext(request)
@@ -97,9 +109,12 @@ def lobby(request):
 		usernames = lobby.split(",")
 		lobbyInfoList = []
 		for summonerName in usernames:
-			userInfo = Container.getUserInfo(summonerName, context['region'])
-			if userInfo['was_found']:
-				lobbyInfoList.append(userInfo['data'])
+			if summonerName:
+				userInfo = Container.getUserInfo(summonerName, context['region'])
+				if userInfo['was_found']:
+					lobbyInfoList.append(userInfo['data'])
+		if len(lobbyInfoList) == 1:
+			return renderProfile(request, lobbyInfoList[0]['summonerName'])
 		context['lobbyInfo'] = lobbyInfoList
 	return render(request, 'history/lobby.html', context = context)
 
