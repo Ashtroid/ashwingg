@@ -13,7 +13,7 @@
 			{% for summoner in team %}
 			<div class="row vw-100 my-1 card">
 				<div class="col row">
-					<div class="col p-2 d-flex justify-content-center align-items-center">
+					<div class="col p-2 d-flex justify-content-center align-items-center h-live-mobile">
 						<img src="{{cdn}}/{{patch}}/img/champion/{{summoner.champion.champion}}.png" height=50px width=50px class="rounded-circle unselectable"/>
 						<div class="d-block">
 							<div class="w-playerInfoText mx-1">
@@ -21,19 +21,21 @@
 									<input type="submit" class="btn btn-link text-dark font-size-13px w-100 d-block text-truncate text-left float-left p-0" value="{{summoner.summonerName}}" name="username">
 								</form>
 								<div class="small text-secondary">	
-									<img src="{{summoner.rankUrl}}" height=20px width=20px/>
+									{% if summoner.rank != 'Unranked' %}<img src="{{summoner.rankUrl}}" height=20px width=20px/>{% endif %}
 									{{summoner.rank}}
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col small d-flex align-items-center justify-content-center">
+						{% if summoner.rank != 'Unranked' %}
 						<div class="d-block">
 							<div class="progress bg-danger w-100">
 								<div class="progress-bar bg-success" role="progressbar" style="width: {{summoner.winPercent}};" aria-valuemin="0" aria-valuemax="100">{{summoner.winPercent}}</div>
 							</div>
 							<div class="small p-1 text-secondary">{{summoner.games}} games played</div>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
