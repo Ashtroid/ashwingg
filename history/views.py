@@ -67,7 +67,7 @@ def changeRegion(request):
 	request.session['region'] = request.POST.get('region')
 	return JsonResponse({'region': request.session['region']})
 
-@ratelimit(key='post:username', rate='6/m', block=True)
+@ratelimit(key='post:username', rate='15/m', block=True)
 def checkLiveStatus(request):
 	summonerId = request.POST.get('summonerId')
 	region = request.POST.get('region')
@@ -90,11 +90,15 @@ def legal(request):
 
 def live_game(request):
 	context = getBaseContext(request)
-	if request.method == 'GET' and 'username' in request.GET:
-		game = Container.getLiveInfo(request.GET.get('username'), context['region'])
+	if request.method == 'GET' and ('username' in request.GET or 'summonerId' in request.GET):
+		if 'summonerId' in request.GET:
+			game = Container.getLiveInfoWithSummonerId(request.GET.get('summonerId'), context['region'])
+		else:
+			game = Container.getLiveInfoWithSummonerName(request.GET.get('username'), context['region'])
 		context['status'] = game['status']
 		if game['status'] == 1:
 			context['game'] = game['data']
+			context['summonerId'] = game['summonerId']
 			context['is_mobile'] = request.user_agent.is_mobile
 			context['cdn'] = lol_version
 			context['patch'] = lol_patch
@@ -116,6 +120,8 @@ def lobby(request):
 		if len(lobbyInfoList) == 1:
 			return renderProfile(request, lobbyInfoList[0]['summonerName'])
 		context['lobbyInfo'] = lobbyInfoList
+		if len(lobbyInfoList) > 1:
+			context['summonerId'] = lobbyInfoList[0]['summonerId']
 	return render(request, 'history/lobby.html', context = context)
 
 def getBaseContext(request):

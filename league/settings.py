@@ -55,6 +55,9 @@ if not DEBUG:
     AWS_S3_URL = '//s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
     AWS_PRELOAD_METADATA = False
     AWS_QUERYSTRING_AUTH = False
+
+    AWS_S3_URL = ""
+    lol_version = "https://ddragon.leagueoflegends.com/cdn"
 else:
     AWS_S3_URL = ""
     lol_version = "https://ddragon.leagueoflegends.com/cdn"

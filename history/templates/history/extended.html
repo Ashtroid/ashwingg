@@ -17,9 +17,9 @@
 					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.accountInfo.spell2Id}}.png" height=20px width=20px  data-toggle="tooltip" title='<div class="title">{{participant.accountInfo.spell2Name}}</div>{{participant.accountInfo.spell2Tooltip}}'/>
 				</div>
 				<div class="mx-3">
-					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.accountId}}_runes_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
+					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#M{{participant.accountId}}_runes_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
 					<!-- Runes Modal -->
-					<div class="modal fade" id="{{participant.accountId}}_runes_modal" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal fade" id="M{{participant.accountId}}_runes_modal" tabindex="-1" role="dialog" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -45,9 +45,9 @@
 				</div>
 				<div class="font-weight-bold w-KDA-extended">{{participant.accountInfo.KDA}}</div>
 				<div class="mx-1">
-					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.accountId}}_items_modal" aria-haspopup="true" aria-expanded="false">Items</button>
+					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#M{{participant.accountId}}_items_modal" aria-haspopup="true" aria-expanded="false">Items</button>
 					<!-- Items Modal -->
-					<div class="modal fade" id="{{participant.accountId}}_items_modal" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal fade" id="M{{participant.accountId}}_items_modal" tabindex="-1" role="dialog" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 							<div class="modal-content">
 								<div class="modal-header">

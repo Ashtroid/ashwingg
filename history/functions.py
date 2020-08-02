@@ -304,7 +304,6 @@ class Container():
 		return getCurrentMatchResultBoolean(summonerId, region)
 
 	def getUserInfo(summonerName, region):
-		QUEUE_TYPE = "RANKED_SOLO_5x5"
 		summonerIdResponse = requestSummonerId(summonerName, region)
 		if summonerIdResponse.status_code == 404 or summonerIdResponse.status_code == 404:
 			return {'was_found': False}
@@ -325,16 +324,10 @@ class Container():
 		data["summonerId"] = identity
 		return {'was_found': True, 'data': data}
 
-	def getLiveInfo(summonerName, region):
-		QUEUE_TYPE = "RANKED_SOLO_5x5"
-		summonerIdResponse = requestSummonerId(summonerName, region)
-		if summonerIdResponse.status_code == 404 or summonerIdResponse.status_code == 500:
-			return {'status': 0, 'message': summonerName + ' is not a valid account in ' + region}
-		summonerId = summonerIdResponse.json()
-		id = summonerId["id"]
-		game = getCurrentMatchResult(id, region)
+	def getLiveInfoWithSummonerId(summonerId, region):
+		game = getCurrentMatchResult(summonerId, region)
 		if game["status"] == 0:
-			return {'status': 0, 'message': summonerName + " is not currently in an active ranked game"}
+			return {'status': 0, 'message': "This summoner is not currently in an active ranked game"}
 		for team in game['matchData']['participantData']:
 			for summoner in team:
 				identity = summoner['summonerId']
@@ -348,11 +341,17 @@ class Container():
 					summoner["rankUrl"] = "https://ashwingg-static.s3.amazonaws.com/ranked-emblems/Emblem_%s.png" % tier
 					summoner["games"] = str(accountStats["wins"] + accountStats["losses"])
 					summoner["winPercent"] = str(accountStats["wins"] * 100 // (accountStats["wins"] + accountStats["losses"])) + "%"
-		return {'status': 1, 'data': game["matchData"]}
+		return {'status': 1, 'data': game["matchData"], 'summonerId': summonerId}
+
+	def getLiveInfoWithSummonerName(summonerName, region):
+		summonerIdResponse = requestSummonerId(summonerName, region)
+		if summonerIdResponse.status_code == 404 or summonerIdResponse.status_code == 500:
+			return {'status': 0, 'message': summonerName + ' is not a valid account in ' + region}
+		summonerIdJSON = summonerIdResponse.json()
+		summonerId = summonerIdJSON["id"]
+		return Container.getLiveInfoWithSummonerId(summonerId, region)
 
 	def getPageInfo(summonerName, region):
-		QUEUE_TYPE = "RANKED_SOLO_5x5"
-
 		summonerIdResponse = requestSummonerId(summonerName, region)
 		if summonerIdResponse.status_code == 404:
 			return config.NO_SUMMONER_FOUND
@@ -368,7 +367,6 @@ class Container():
 			jsonDict["isInGame"] = True
 			jsonDict["matchData"] = currentMatchResult["matchData"]
 		jsonDict["summonerId"] = id
-		jsonDict["region"] = region
 		jsonDict["accountId"] = summonerId["accountId"]
 		jsonDict["summonerName"] = summonerId["name"]
 		jsonDict["profileIconId"] = summonerId["profileIconId"]

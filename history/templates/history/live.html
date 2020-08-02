@@ -23,9 +23,9 @@
 					<img src = "{{cdn}}/{{patch}}/img/spell/{{participant.spell2Id}}.png" height=20px width=20px  data-toggle="tooltip" title='<div class="title">{{participant.spell2Name}}</div>{{participant.spell2Tooltip}}'/>
 				</div>
 				<div class="mx-4">
-					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#{{participant.summonerId}}_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
+					<button class="btn btn-dark btn-sm font-size-13px p-1 dropdown-toggle" role="button" data-toggle="modal" data-target="#M{{participant.summonerId}}_modal" aria-haspopup="true" aria-expanded="false">Runes</button>
 					<!-- Modal -->
-					<div class="modal fade" id="{{participant.summonerId}}_modal" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal fade" id="M{{participant.summonerId}}_modal" tabindex="-1" role="dialog" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered" role="document">
 							<div class="modal-content">
 								<div class="modal-header">

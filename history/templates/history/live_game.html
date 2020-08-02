@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container-fluid bg-light-blue">
 	{% if game %}
+		<form method="get" id="liveRedirect" action="{% url 'lobby' %}" class="d-none"></form>
 		<div class="row">
 			<div class="col w-100 liveGameDuration d-flex justify-content-center p-1 font-weight-bold text-dark-blue">
 				Loading...
@@ -27,7 +28,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col mall d-flex align-items-center justify-content-center h-live-mobile">
+					<div class="col small d-flex align-items-center justify-content-center">
 						{% if summoner.rank != 'Unranked' %}
 						<div class="d-block">
 							<div class="progress bg-danger w-100">
@@ -40,7 +41,11 @@
 				</div>
 			</div>
 			{% endfor %}
-			<div class="row vw-100 my-2"></div>
+			<div class="row vw-100 p-1">
+				<div class="col d-flex align-items-center justify-content-center">
+					<i class="fa fa-handshake-o"></i>
+				</div>
+			</div>
 		{% endfor %}
 		{% else %}
 		{% for team in game.participantData %}
@@ -141,6 +146,27 @@
 		liveGameTime++;
 		$(".liveGameDuration").text(convertToTime(liveGameTime));
 	}, 1000);
+	var lock = false;
+	setInterval(function () {
+		$.ajax ({
+				type: "POST",
+				url: "{% url 'live' %}",
+				data: {
+					'summonerId': "{{summonerId}}",
+					'region': "{{region}}",
+					'isInGame': true,
+					'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val()
+				},
+				success: function(response) {
+					if(response.shouldRefresh) {
+						lock = true;
+						$("#liveRedirect").submit();
+					}
+				},
+				error: function (response) {
+				}
+			});
+	}, 10000);
 	{% endif %}
 </script>
 {% endblock %}

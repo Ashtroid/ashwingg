@@ -40,6 +40,12 @@
 		</div>
 	</div>
 	{% endif %}
+	{% if summonerId %}
+	<form method="get" id="liveRedirect" action="{% url 'live_game' %}" class="d-none">
+		<input type="hidden" name="summonerId" value="{{summonerId}}">
+		<input type="hidden" name="region" value="{{region}}">
+	</form>
+	{% endif %}
 	<div class="row p-3">
 		<div class="col">
 			<form method="get" class="d-flex justify-content-center w-100">
@@ -92,7 +98,36 @@
 				set.add(item[2].trim());
 			}
 		});
-		$('.searchArea').val(Array.from(set).join(", "));
+		if(set.size) {
+			$('.searchArea').val(Array.from(set).join(", "));
+		} else {
+			$('.searchArea').val(pastedData);	
+		}
 	});
+	{% if summonerId %}
+	var lock = false;
+	setInterval(function () {
+		if(!lock) {
+			$.ajax ({
+				type: "POST",
+				url: "{% url 'live' %}",
+				data: {
+					'summonerId': "{{summonerId}}",
+					'region': "{{region}}",
+					'isInGame': false,
+					'csrfmiddlewaretoken': jQuery("[name=csrfmiddlewaretoken]").val()
+				},
+				success: function(response) {
+					if(response.shouldRefresh) {
+						lock = true;
+						$("#liveRedirect").submit();
+					}
+				},
+				error: function (response) {
+				}
+			});				
+		}
+	}, 5000);
+	{% endif %}
 </script>
 {% endblock %}
