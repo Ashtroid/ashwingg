@@ -205,7 +205,7 @@ def processMatch(region, championDict, summonerSpell, summoner, itemJson, champi
 			info["items"] = itemList
 			trinket = str(stats["item6"])
 			info["trinket"] = trinket
-			if trinket != 0:
+			if trinket != '0':
 				info["trinketName"] = itemJson[trinket]["name"]
 				info["trinketDescription"] = itemJson[trinket]["description"]
 			championId = matchData["participants"][participantId-1]["championId"]
