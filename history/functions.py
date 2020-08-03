@@ -72,8 +72,13 @@ def getRunes(stats):
 	map = json.load(open(os.path.join(BASE_DIR, "history/static/runes.json")))
 	runes = []
 	for i in range(0, 6):
-		runes.append(map.get(str(stats["perk" + str(i)])))
-	subRune = map.get(str(stats['perkSubStyle']))
+		perkStr = 'perk' + str(i)
+		if perkStr in stats:
+			runes.append(map.get(str(stats[perkStr])))
+	if 'perkSubStyle' in stats:
+		subRune = map.get(str(stats['perkSubStyle']))
+	else:
+		subRune = ''
 	return {'all': runes, 'subRune': subRune}
 
 #broken for now

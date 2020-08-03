@@ -72,6 +72,14 @@
 					<p class="text-center">
 						Python calls the Riot API and parses summoner info. The view renders the template with summoner info based on their Ranked Solo/Duo Queue games. AJAX POST calls backend using a View class, returning a rendered String which displays the matches, using standard Python Multiprocessing. Matches are indexed by matchId, which are then stored in the database, and upon compute, check against the database to avoid re-computation for much faster load times and reduced server load. The website is configured to only run through SSL, powered by a LetsEncrypt cert/key pair and enforced by Route 53 and Nginx config. Standard Django headers provide rate limiting to avoid throttling and CSRF protection for security, with in-memory caching to store the rate limiter keys. Static and Media files are served via CDN.
 					</p>
+					<div class="text-center">
+						<img class="d-none d-lg-inline-block" src="https://www.plantuml.com/plantuml/png/RT31Iu0m50Rm-_wAX_SkHPSTmZ8xYOGBEilyYD5ya-SpzBzlPXA4fx4Vtxvjhvor5rt6Q3HeXAKNIQpWmLGnW9Lk7kYvTPOUtnrrQL7StvaCkplNM6gWSyrUjabDXZFku1S1-SGCho7nUQZey0MPGQ-Irgsmr7u4Niq__gc7P3e3nsxtfzv_WeVZINLrQtxXilqDunHxnTK5nm__CgI913n0J9cNF9Hl"/>
+						<div class="d-flex align-items-center justify-content-center">
+							<a class="btn btn-dark text-light mx-2 d-block d-lg-none" target="blank" href="https://www.plantuml.com/plantuml/png/RT31Iu0m50Rm-_wAX_SkHPSTmZ8xYOGBEilyYD5ya-SpzBzlPXA4fx4Vtxvjhvor5rt6Q3HeXAKNIQpWmLGnW9Lk7kYvTPOUtnrrQL7StvaCkplNM6gWSyrUjabDXZFku1S1-SGCho7nUQZey0MPGQ-Irgsmr7u4Niq__gc7P3e3nsxtfzv_WeVZINLrQtxXilqDunHxnTK5nm__CgI913n0J9cNF9Hl">Frontend</a>
+							<a class="btn btn-dark text-light mx-2" target="blank" href="https://www.plantuml.com/plantuml/png/XP71QiCm38RlVWhHIxV3yW0-Z8woms27KlO2nb5IWIDdifoHjvzD5xg4bPsCvEyJIFyXgHFDGp1A6j321mvZS8fmHcvHY7iJqFKPcomXDUCCJyzmeQHHvgLbuNKOTOQ7_VuHHgSNim6gCn5-NU7IB92YSBhIorV5kinUANAjcsDaTSGe5jvZJnuwAHtarloDRGTOE4P12DLTAHNSdIagl9pUThOigq8u8JZlOsO5uYxAu2flRk1sVXNzNMyX_rlj9D5ZIdVT6xk-O_4cQl6tjphb4gNzoR8ydncJcaCfI-JV">Template</a>
+							<a class="btn btn-dark text-light mx-2" target="blank" href="https://www.plantuml.com/plantuml/png/TL3BJiCm4BpxA_O7W0Et751BG5HHAIgk1DV8sRHM7JlOuwB-FOvSC0NrjfgTnsXc0Qr778o0Xk6AxbkrPzk9XGkWgpkg7rOLpTyarSR5hlVEGXmqVuRhyJZz5vldPKMlISAUmCDeMh2Oq3Erl1NfBe8d1gLeQ4MzDXn-5CqwiZycKJD_JxOVaGD41d_7XT7PK7A-6wNNezpGw09kjdpUj8zMGJjxuZ6yvWFJq4BjH7bcibmlDRYYUiTgJxtp9rx6_zj9ECzT9b4ZNrP_7Kl5FDR4bl3QRY_EcTtAgBE4ni5y0G00">Backend</a>
+						</div>
+					</div>
 				</div>
 			</div>
 			<h5 class="text-dark">Business Details</h5>
