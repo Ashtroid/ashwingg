@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
-lol_patch = "10.15.1"
+lol_patch = "10.16.1"
 CDN_URL = "https://ashwingg-static.s3.amazonaws.com/dragontail-"
 #CDN_URL = "/dragontail-"
 lol_version = CDN_URL + lol_patch
