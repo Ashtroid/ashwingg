@@ -15,7 +15,6 @@ import environ
 
 lol_patch = "10.16.1"
 CDN_URL = "https://ashwingg-static.s3.amazonaws.com/dragontail-"
-#CDN_URL = "/dragontail-"
 lol_version = CDN_URL + lol_patch
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

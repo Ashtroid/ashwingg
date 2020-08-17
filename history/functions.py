@@ -84,8 +84,8 @@ def getRunes(stats):
 #broken for now
 def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed):
 	participantData = []
-	roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
-	champion_roles[777] = {'JUNGLE': 1.0, 'TOP': 0.0, 'MIDDLE': 0.0, 'BOTTOM': 0.0, 'UTILITY': 0.0}
+	#roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
+	#champion_roles[777] = {'JUNGLE': 1.0, 'TOP': 0.0, 'MIDDLE': 0.0, 'BOTTOM': 0.0, 'UTILITY': 0.0}
 	blueRoles = get_roles(champion_roles, unsortedChampListBlue)
 	redRoles = get_roles(champion_roles, unsortedChampListRed)
 	teams = [blueRoles, redRoles]
