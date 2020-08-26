@@ -9,7 +9,7 @@ from league.settings import lol_patch, lol_version
 
 @ratelimit(key='ip', rate='10/m', block=True)
 def home(request):
-	if request.method == 'GET' and 'username' in request.GET:
+	if request.method == 'GET' and 'username' in request.GET and request.GET['username'] != '':
 		return renderProfile(request, request.GET['username'])
 	return render(request, 'history/homepage.html', context = getBaseContext(request))
 
