@@ -30,7 +30,7 @@ def getSummonersInActiveGame(summonerId, region):
 def requestMatchesById(id, region, startGame):
 	startGame = int(startGame)
 	numGames = 5
-	beginTime = 1578477600
+	beginTime = 1605312000000
 	URL = "https://%s.api.riotgames.com/lol/match/v4/matchlists/by-account/%s?queue=420&beginIndex=%d&endIndex=%d&beginTime=%d&api_key=%s" % (region, id, startGame, startGame + numGames, beginTime, API_KEY)
 	response = requests.get(URL)
 	return response.json()
@@ -85,7 +85,7 @@ def getRunes(stats):
 def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed):
 	participantData = []
 	roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
-	champion_roles[360] = {'JUNGLE': 0.0, 'TOP': 0.0, 'MIDDLE': 0.0, 'BOTTOM': 1.0, 'UTILITY': 0.0}
+	#champion_roles[360] = {'JUNGLE': 0.0, 'TOP': 0.0, 'MIDDLE': 0.0, 'BOTTOM': 1.0, 'UTILITY': 0.0}
 	blueRoles = get_roles(champion_roles, unsortedChampListBlue)
 	redRoles = get_roles(champion_roles, unsortedChampListRed)
 	teams = [blueRoles, redRoles]
