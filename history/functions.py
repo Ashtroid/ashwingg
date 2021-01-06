@@ -81,7 +81,7 @@ def getRunes(stats):
 		subRune = ''
 	return {'all': runes, 'subRune': subRune}
 
-#broken for now
+#update on champion release
 def getParticipantData(champion_roles, participantDataMap, unsortedChampListBlue, unsortedChampListRed):
 	participantData = []
 	roles = ['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']
@@ -197,10 +197,13 @@ def processMatch(region, championDict, summonerSpell, summoner, itemJson, champi
 				else:
 					itemKey = str(itemIntKey)
 					itemDict = dict()
-					itemDict["image"] = itemKey + ".png"
-					itemDict["name"] = itemJson[itemKey]["name"]
-					itemDict["gold"] = itemJson[itemKey]["gold"]
-					itemDict["description"] = itemJson[itemKey]["description"]
+					if itemKey not in itemJson:
+						print(itemKey)
+					else:
+						itemDict["image"] = itemKey + ".png"
+						itemDict["name"] = itemJson[itemKey]["name"]
+						itemDict["gold"] = itemJson[itemKey]["gold"]
+						itemDict["description"] = itemJson[itemKey]["description"]
 					itemList.append(itemDict)
 			info["items"] = itemList
 			trinket = str(stats["item6"])

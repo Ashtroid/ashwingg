@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 
-lol_patch = "10.23.1"
-CDN_URL = "https://ashwingg-static.s3.amazonaws.com/dragontail-10.23.1"
+lol_patch = "11.1.1"
+CDN_URL = "https://ashwingg-static.s3.amazonaws.com/dragontail-11.1.1"
 #lol_version = CDN_URL + lol_patch
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
